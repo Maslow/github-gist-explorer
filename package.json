@@ -1,0 +1,217 @@
+{
+	"name": "github-gist-explorer",
+	"displayName": "Github Gist Explorer",
+	"description": "Create, open and edit Gists",
+	"version": "0.0.1",
+	"icon": "media/icon.png",
+	"publisher": "kevin",
+	"author": {
+		"name": "Kevin Chou",
+		"url": "https://kexinlife.com",
+		"email": "k9982874@gmail.com"
+	},
+	"repository": "https://github.com/k9982874/github-gist-explorer",
+	"enableProposedApi": true,
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"github-gist-explorer",
+		"github",
+		"gist",
+		"explorer"
+	],
+	"activationEvents": [
+		"onView:GitHubGistExplorer"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "github-gist-explorer",
+					"title": "GitHub Gist Explorer",
+					"icon": "media/github.svg"
+				}
+			]
+		},
+		"views": {
+			"github-gist-explorer": [
+				{
+					"id": "GitHubGistExplorer",
+					"name": "Gist List"
+				}
+			],
+			"explorer": []
+		},
+		"commands": [
+			{
+				"command": "GitHubGistExplorer.refresh",
+				"title": "%extension.command.refresh%",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "GitHubGistExplorer.addGist",
+				"title": "%extension.command.add_gist%"
+			},
+			{
+				"command": "GitHubGistExplorer.editGist",
+				"title": "%extension.command.edit_gist%"
+			},
+			{
+				"command": "GitHubGistExplorer.deleteGist",
+				"title": "%extension.command.delete_gist%"
+			},
+			{
+				"command": "GitHubGistExplorer.starGist",
+				"title": "%extension.command.star_gist%"
+			},
+			{
+				"command": "GitHubGistExplorer.unstarGist",
+				"title": "%extension.command.unstar_gist%"
+			},
+			{
+				"command": "GitHubGistExplorer.addFile",
+				"title": "%extension.command.add_file%"
+			},
+			{
+				"command": "GitHubGistExplorer.editFile",
+				"title": "%extension.command.edit_file%",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
+				"command": "GitHubGistExplorer.deleteFile",
+				"title": "%extension.command.delete_file%"
+			},
+			{
+				"command": "GitHubGistExplorer.renameFile",
+				"title": "%extension.command.rename_file%"
+			},
+			{
+				"command": "GitHubGistExplorer.reloadFile",
+				"title": "%extension.command.reload_file%",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			}
+		],
+		"menus": {
+			"commandPalette": [],
+			"editor/title": [],
+			"view/title": [
+				{
+					"command": "GitHubGistExplorer.refresh",
+					"when": "view == GitHubGistExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "GitHubGistExplorer.addGist",
+					"when": "view == GitHubGistExplorer"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "GitHubGistExplorer.editGist",
+					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
+					"group": "GitHubGistRoot@1"
+				},
+				{
+					"command": "GitHubGistExplorer.starGist",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistRoot",
+					"group": "GitHubGistRoot@2"
+				},
+				{
+					"command": "GitHubGistExplorer.unstarGist",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistRootStarrd",
+					"group": "GitHubGistRoot@2"
+				},
+				{
+					"command": "GitHubGistExplorer.deleteGist",
+					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
+					"group": "GitHubGistRoot@3"
+				},
+				{
+					"command": "GitHubGistExplorer.addFile",
+					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
+					"group": "GitHubGistFileAdd@1"
+				},
+				{
+					"command": "GitHubGistExplorer.renameFile",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistFile",
+					"group": "GitHubGistFile@1"
+				},
+				{
+					"command": "GitHubGistExplorer.editFile",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistFile",
+					"group": "GitHubGistFile@2"
+				},
+				{
+					"command": "GitHubGistExplorer.deleteFile",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistFile",
+					"group": "GitHubGistFile@3"
+				},
+				{
+					"command": "GitHubGistExplorer.reloadFile",
+					"when": "view == GitHubGistExplorer && viewItem == GitHubGistFile",
+					"group": "GitHubGistFileReload@1"
+				}
+			]
+		},
+		"configuration": [
+			{
+				"title": "GitHub Gist Explorer",
+				"properties": {
+					"github.username": {
+						"type": "string",
+						"default": ""
+					},
+					"github.token": {
+						"type": "string",
+						"default": ""
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"watch": "tsc -b -w",
+		"compile": "tsc -b",
+		"clean": "gulp clean",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/mkdirp": "^0.5.2",
+		"@types/node": "*",
+		"@types/rimraf": "^2.0.2",
+		"del": "^4.1.1",
+		"event-stream": "^4.0.1",
+		"gulp": "^4.0.2",
+		"gulp-filter": "^5.1.0",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-typescript": "^5.0.1",
+		"run-sequence": "^2.2.1",
+		"ts-loader": "^6.0.0",
+		"tslint": "^5.11.0",
+		"typescript": "^3.4.5",
+		"vsce": "^1.61.0",
+		"vscode-nls-dev": "^3.2.6"
+	},
+	"dependencies": {
+		"axios": "^0.18.0",
+		"mkdirp": "^0.5.1",
+		"moment": "^2.24.0",
+		"rimraf": "^2.6.2",
+		"vscode": "^1.1.22",
+		"vscode-nls": "^4.1.0"
+	}
+}

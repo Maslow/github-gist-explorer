@@ -1,0 +1,13 @@
+{
+	"extension.command.refresh": "刷新",
+	"extension.command.add_gist": "新建",
+	"extension.command.edit_gist": "编辑",
+	"extension.command.delete_gist": "删除",
+	"extension.command.star_gist": "收藏",
+	"extension.command.unstar_gist": "取消收藏",
+	"extension.command.add_file": "新建文件",
+	"extension.command.edit_file": "编辑文件",
+	"extension.command.delete_file": "删除文件",
+	"extension.command.rename_file": "重命名",
+	"extension.command.reload_file": "重新加载"
+}

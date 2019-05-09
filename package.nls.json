@@ -1,0 +1,13 @@
+{
+	"extension.command.refresh": "Refresh",
+	"extension.command.add_gist": "Add Gist",
+	"extension.command.edit_gist": "Edit Gist",
+	"extension.command.delete_gist": "Delete Gist",
+	"extension.command.star_gist": "Star Gist",
+	"extension.command.unstar_gist": "Unstar Gist",
+	"extension.command.add_file": "Add File",
+	"extension.command.edit_file": "Edit File",
+	"extension.command.delete_file": "Delete File",
+	"extension.command.rename_file": "Rename File",
+	"extension.command.reload_file": "Reload File"
+}
