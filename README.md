@@ -5,11 +5,11 @@
 
 ## Key Features
 ```
-1. List your GitHub Gist.
-2. Create new gist and file.
-3. Delete the gist and file.
-4. Edit the gist and file.
-5. Star or unstar the gist.
+1. List all your GitHub Gist.
+2. Star or unstar the gist.
+3. Create secet and public gist.
+4. Edit or delete the gist.
+5. Create, edit, delete, rename the file of Gist.
 ```
 
 ## Steps To Get a Personal Access Token from GitHub
