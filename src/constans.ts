@@ -1,4 +1,4 @@
-export const EXTENSION_ID: string = 'kevin.github-gist-explorer';
+export const EXTENSION_ID: string = 'k9982874.github-gist-explorer';
 export const EXTENSION_NAME: string = 'GitHub Gist Explorer';
 export const GITHUB_API_URL: string =  'https://api.github.com';
 

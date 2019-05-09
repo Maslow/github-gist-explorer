@@ -1,7 +1,7 @@
 # Github Gist Explorer
 
 *Management your GitHub Gists with Visual Studio Code*
-![Screenshot](https://github.com/k9982874/github-gist-explorer/media/guide-1.png)
+![Screenshot](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-1.png)
 
 ## Key Features
 ```
@@ -18,11 +18,11 @@ This extension requires a Personal Access Token from your GitHub account. You ca
 
 **[Generate New Token](https://github.com/settings/tokens/new?description=code-setting-sync&scopes=gist)**
 
-![Select Scopes](https://github.com/k9982874/github-gist-explorer/media/guide-2.png)
+![Select Scopes](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-2.png)
 
 **Get an Access Token.**
 
-![Get Access Token](https://github.com/k9982874/github-gist-explorer/media/guide-3.png)
+![Get Access Token](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-3.png)
 
 
 > Save the Token somewhere for future use (i.e. to upload from other machines).

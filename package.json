@@ -4,7 +4,7 @@
 	"description": "Create, open and edit Gists",
 	"version": "0.0.1",
 	"icon": "media/icon.png",
-	"publisher": "kevin",
+	"publisher": "k9982874",
 	"author": {
 		"name": "Kevin Chou",
 		"url": "https://kexinlife.com",
@@ -187,6 +187,8 @@
 		"watch": "tsc -b -w",
 		"compile": "tsc -b",
 		"clean": "gulp clean",
+		"package": "gulp package",
+		"publish": "gulp publish",
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
@@ -204,6 +206,7 @@
 		"tslint": "^5.11.0",
 		"typescript": "^3.4.5",
 		"vsce": "^1.61.0",
+		"vscode": "^1.1.22",
 		"vscode-nls-dev": "^3.2.6"
 	},
 	"dependencies": {
@@ -211,7 +214,6 @@
 		"mkdirp": "^0.5.1",
 		"moment": "^2.24.0",
 		"rimraf": "^2.6.2",
-		"vscode": "^1.1.22",
 		"vscode-nls": "^4.1.0"
 	}
 }
