@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -55,6 +55,34 @@
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
 				}
+			},
+			{
+				"command": "GitHubGistExplorer.ascending",
+				"title": "%extension.command.ascending%",
+				"icon": {
+					"light": "resources/light/ascending.svg",
+					"dark": "resources/dark/ascending.svg"
+				}
+			},
+			{
+				"command": "GitHubGistExplorer.descending",
+				"title": "%extension.command.descending%",
+				"icon": {
+					"light": "resources/light/descending.svg",
+					"dark": "resources/dark/descending.svg"
+				}
+			},
+			{
+				"command": "GitHubGistExplorer.sortByLable",
+				"title": "%extension.command.sort_by_label%"
+			},
+			{
+				"command": "GitHubGistExplorer.sortByLastUpdated",
+				"title": "%extension.command.sort_by_last_updated%"
+			},
+			{
+				"command": "GitHubGistExplorer.sortByCreated",
+				"title": "%extension.command.sort_by_created%"
 			},
 			{
 				"command": "GitHubGistExplorer.addGist",
@@ -115,6 +143,31 @@
 					"group": "navigation"
 				},
 				{
+					"command": "GitHubGistExplorer.ascending",
+					"when": "view == GitHubGistExplorer && loaded && ascending == true",
+					"group": "navigation"
+				},
+				{
+					"command": "GitHubGistExplorer.descending",
+					"when": "view == GitHubGistExplorer && loaded && ascending == false",
+					"group": "navigation"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByLable",
+					"when": "view == GitHubGistExplorer",
+					"group": "GitHubGistSort@1"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByLastUpdated",
+					"when": "view == GitHubGistExplorer",
+					"group": "GitHubGistSort@2"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByCreated",
+					"when": "view == GitHubGistExplorer",
+					"group": "GitHubGistSort@3"
+				},
+				{
 					"command": "GitHubGistExplorer.addGist",
 					"when": "view == GitHubGistExplorer"
 				}
@@ -171,7 +224,24 @@
 			{
 				"title": "GitHub Gist Explorer",
 				"properties": {
-					"github.username": {
+					"explorer.sortBy": {
+						"type": "string",
+						"default": "lastUpdated",
+						"enum": [
+							"Lable",
+							"Last Updated",
+							"Created"
+						]
+					},
+					"explorer.ascending": {
+						"type": "string",
+						"default": "False",
+						"enum": [
+							"True",
+							"False"
+						]
+					},
+					"github.userName": {
 						"type": "string",
 						"default": ""
 					},

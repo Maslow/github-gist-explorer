@@ -4,7 +4,7 @@ import * as nls from 'vscode-nls';
 const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 
 import { commands, extensions, window, workspace } from 'vscode';
-import { ConfigurationChangeEvent, Disposable, ExtensionContext, TextDocument, TextEditor, TextEditorEdit, Uri } from 'vscode';
+import { ConfigurationChangeEvent, Disposable, ExtensionContext, TextDocument, Uri } from 'vscode';
 
 import * as api from './gist-api';
 import * as modules from './modules';
@@ -13,7 +13,7 @@ import * as filesystem from './file-system';
 
 import { promisify } from './promisify';
 
-import { GistTreeProvider, GistTreeItem } from './tree-provider';
+import { GistTreeProvider, GistTreeItem, GistTreeSortBy } from './tree-provider';
 import { GistContentProvider } from './content-provider';
 
 import ConfigurationManager from './configuration';
@@ -24,6 +24,8 @@ export class GitHubGistExplorer {
 
 	public readonly documentsSaving: Array<string> = new Array();
 
+	public readonly executeCommand: any;
+
 	public readonly showErrorMessage: any;
 	public readonly showWarningMessage: any;
 	public readonly showInputBox: any;
@@ -32,6 +34,8 @@ export class GitHubGistExplorer {
 	public readonly openTextDocument: any;
 
 	constructor() {
+		this.executeCommand = promisify(commands.executeCommand, commands);
+
 		this.showErrorMessage = promisify(window.showErrorMessage, window);
 		this.showWarningMessage = promisify(window.showWarningMessage, window);
 
@@ -39,11 +43,23 @@ export class GitHubGistExplorer {
 		this.showQuickPick = promisify(window.showQuickPick, window);
 		this.showTextDocument = promisify(window.showTextDocument, window);
 		this.openTextDocument = promisify(workspace.openTextDocument, workspace);
+
+		const sortBy: string = ConfigurationManager.get('sortBy');
+		const ascending: boolean = ConfigurationManager.get('ascending') === 'True';
+
+		this.executeCommand('setContext', 'ascending', ascending)
+			.then(() => {
+				this.treeProvider.sort(sortBy, ascending);
+				return this.treeProvider.refresh();
+			})
+			.finally(() => {
+				this.executeCommand('setContext', 'loaded', true);
+			});
 	}
 
 	getHomeDirectory(): string {
 		const extensionPath: string = extensions.getExtension(constans.EXTENSION_ID).extensionPath;
-		const username: string = workspace.getConfiguration('github').get('username');
+		const username: string = ConfigurationManager.getGitHub('username');
 
 		return `${extensionPath}/${username}`;
 	}
@@ -55,6 +71,55 @@ export class GitHubGistExplorer {
 		});
 	}
 
+	sort(sortBy: string, ascending?: boolean) {
+		if (ascending === undefined) {
+			ascending = ConfigurationManager.get('ascending') === 'True';
+		}
+
+		Promise.all([
+				ConfigurationManager.set('sortBy', sortBy),
+				ConfigurationManager.set('ascending', ascending ? 'True' : 'False')
+			])
+			.then(() => {
+				this.treeProvider.sort(sortBy, ascending);
+				this.executeCommand('setContext', 'ascending', ascending);
+			})
+			.catch(error => {
+				this.showErrorMessage(error.message);
+			});
+	}
+
+	sortByLable() {
+		const sortBy: string = ConfigurationManager.get('sortBy')
+		if (sortBy !== GistTreeSortBy.Lable) {
+			this.sort(GistTreeSortBy.Lable);
+		}
+	}
+
+	sortByLastUpdated() {
+		const sortBy: string = ConfigurationManager.get('sortBy')
+		if (sortBy !== GistTreeSortBy.LastUpdated) {
+			this.sort(GistTreeSortBy.LastUpdated);
+		}
+	}
+
+	sortByCreated() {
+		const sortBy: string = ConfigurationManager.get('sortBy')
+		if (sortBy !== GistTreeSortBy.Created) {
+			this.sort(GistTreeSortBy.Created);
+		}
+	}
+
+	ascending() {
+		const sortBy: string = ConfigurationManager.get('sortBy')
+		this.sort(sortBy, false);
+	}
+
+	descending() {
+		const sortBy: string = ConfigurationManager.get('sortBy')
+		this.sort(sortBy, true);
+	}
+
 	addGist() {
 		const options = {
 			prompt: localize('explorer.add_gist_description', 'Provide the description for your new gist here')
@@ -62,7 +127,7 @@ export class GitHubGistExplorer {
 		this.showInputBox(options)
 			.then(description => {
 				return this.showQuickPick(
-						[ constans.PUBLIC_GIST, constans.SECRET_GIST ],
+						[ constans.GistType.Public, constans.GistType.Secret ],
 						{ placeHolder: localize('explorer.add_gist_type', 'Please decide the type for your new gist')}
 					)
 					.then(type => {
@@ -126,7 +191,7 @@ export class GitHubGistExplorer {
 
 	starGist(node: GistTreeItem) {
 		const gist: modules.GitHubGist = node.metadata as modules.GitHubGist;
-		return api.starWaitable(gist.id)
+		api.starWaitable(gist.id)
 			.then(() => {
 				const home: string = this.getHomeDirectory();
 				return filesystem.rmrf(`${home}/${gist.id}`);
@@ -140,7 +205,7 @@ export class GitHubGistExplorer {
 
 	unstarGist(node: GistTreeItem) {
 		const gist: modules.GitHubGist = node.metadata as modules.GitHubGist;
-		return api.unstarWaitable(gist.id)
+		api.unstarWaitable(gist.id)
 			.then(() => {
 				const home: string = this.getHomeDirectory();
 				return filesystem.rmrf(`${home}/${gist.id}`);
@@ -250,7 +315,7 @@ export class GitHubGistExplorer {
 			value: file.filename,
 			prompt: localize('explorer.rename_file_name', 'Provide the name for file here')
 		}
-		return this.showInputBox(options)
+		this.showInputBox(options)
 			.then(value => {
 				if (!value) {
 					const msg = localize('error.file_name_required', 'File name is required');
@@ -362,6 +427,11 @@ export function activate(context: ExtensionContext) {
 	// **********************************************************************
 	// commands
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.refresh', explorer.refresh.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByLable', explorer.sortByLable.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByLastUpdated', explorer.sortByLastUpdated.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByCreated', explorer.sortByCreated.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.ascending', explorer.ascending.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.descending', explorer.descending.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.addGist', explorer.addGist.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.editGist', explorer.editGist.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.deleteGist', explorer.deleteGist.bind(explorer));

@@ -1,7 +1,7 @@
 import * as nls from 'vscode-nls';
 const localize = nls.loadMessageBundle();
 
-import * as vscode from 'vscode';
+import { workspace } from 'vscode';
 
 import axios, { AxiosRequestConfig } from 'axios';
 
@@ -79,7 +79,7 @@ export default class Gist {
 
 		const data = {
 			description,
-			'public': type === constans.PUBLIC_GIST,
+			'public': type === constans.GistType.Public,
 			files: {
 				[file.name]: {
 					content: file.words
@@ -194,7 +194,7 @@ export default class Gist {
 			});
 	}
 
-	renameFile(gistID: string, filename: string, newFilename: string): Promise<void> {
+	renameFile(gistID: string, filename: string, newFilename: string): Promise<string> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
 		const data = {
@@ -212,7 +212,7 @@ export default class Gist {
 					return Promise.reject(new Error(response.statusText));
 				}
 
-				return Promise.resolve();
+				return Promise.resolve(newFilename);
 			});
 	}
 }
@@ -230,55 +230,55 @@ export const deleteFileWaitable = waitfiy(`${constans.EXTENSION_NAME}: ${localiz
 export const renameFileWaitable = waitfiy(`${constans.EXTENSION_NAME}: ${localize('explorer.renaming_file', 'Renaming file...')}`, renameFile);
 
 export function getFile(url: string): Promise<any> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).getFile(url);
 }
 
 export function list(username: string): Promise<modules.GitHubGist[]> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).list(username);
 }
 
 export function listStarred(): Promise<modules.GitHubGist[]> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).listStarred();
 }
 
 export function add(type: string, description: string): Promise<modules.GitHubGist> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).add(type, description);
 }
 
 export function update(gistID: string, description: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).update(gistID, description);
 }
 
 export function destroy(gistID: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).destroy(gistID);
 }
 
 export function star(gistID: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).star(gistID);
 }
 
 export function unstar(gistID: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).unstar(gistID);
 }
 export function updateFile(gistID: string, filename: string, content: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).updateFile(gistID, filename, content);
 }
 
 export function deleteFile(gistID: string, filename: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).deleteFile(gistID, filename);
 }
 
-export function renameFile(gistID: string, filename: string, newFilename: string): Promise<void> {
-	const token: string = vscode.workspace.getConfiguration('github').get('token');
+export function renameFile(gistID: string, filename: string, newFilename: string): Promise<string> {
+	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).renameFile(gistID, filename, newFilename);
 }

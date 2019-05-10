@@ -2,8 +2,10 @@ export const EXTENSION_ID: string = 'k9982874.github-gist-explorer';
 export const EXTENSION_NAME: string = 'GitHub Gist Explorer';
 export const GITHUB_API_URL: string =  'https://api.github.com';
 
-export const PUBLIC_GIST: string = 'Public';
-export const SECRET_GIST: string = 'Secret';
+export enum GistType {
+	Public = 'Public',
+	Secret = 'Secret'
+}
 
 export const CLASSIC_MOVIE_QUOTES = [
 	{

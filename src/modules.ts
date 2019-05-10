@@ -1,31 +1,32 @@
 import * as moment from 'moment';
 
 export class GitHubGist {
-	public url: string;
-	public forksURL: string;
-	public commitsURL: string;
-	public id: string;
-	public nodeID: string;
-	public gitPullURL: string;
-	public gitPushURL: string;
-	public htmlURL: string;
-	public files: Array<GitHubGistFile>;
-	public public: string;
-	public createdAt: moment.Moment;
-	public updatedAt: moment.Moment;
-	public description: string;
-	public comments: string;
-	public user: object;
-	public commentsURL: string;
-	public owner: GitHubGistOwner;
-	public truncated: string;
+	id: string;
+	label: string;
+	nodeID: string;
+	url: string;
+	forksURL: string;
+	commitsURL: string;
+	gitPullURL: string;
+	gitPushURL: string;
+	htmlURL: string;
+	files: Array<GitHubGistFile>;
+	public: string;
+	createdAt: moment.Moment;
+	updatedAt: moment.Moment;
+	description: string;
+	comments: string;
+	user: object;
+	commentsURL: string;
+	owner: GitHubGistOwner;
+	truncated: string;
 
 	constructor(data: any) {
+		this.id = data.id;
+		this.nodeID = data.node_id;
 		this.url = data.url;
 		this.forksURL = data.forks_url;
 		this.commitsURL = data.commits_url;
-		this.id = data.id;
-		this.nodeID = data.node_id;
 		this.gitPullURL = data.git_pull_url;
 		this.gitPushURL = data.git_push_url;
 		this.htmlURL = data.html_url;
@@ -39,16 +40,26 @@ export class GitHubGist {
 		this.commentsURL = data.comments_url;
 		this.owner = new GitHubGistOwner(data.owner)
 		this.truncated = data.truncated;
+
+		if (this.description.length > 0) {
+			this.label = this.description;
+		} else if (this.files.length === 1) {
+			this.label = this.files[0].filename;
+		} else if (this.files.length > 0) {
+			this.label = `${this.files[0].filename} and ${this.files.length - 1} files`;
+		} else {
+			this.label = '(Empty Gist)';
+		}
 	}
 }
 
 export class GitHubGistFile {
-	public gistID: string;
-	public filename: string;
-	public type: string;
-	public language: string;
-	public rawURL: string;
-	public size: number;
+	gistID: string;
+	filename: string;
+	type: string;
+	language: string;
+	rawURL: string;
+	size: number;
 
 	constructor(gistID: string, data: any) {
 		this.gistID = gistID;
@@ -61,24 +72,24 @@ export class GitHubGistFile {
 }
 
 export class GitHubGistOwner {
-	public login: string;
-	public id: number;
-	public nodeID: string;
-	public avatarURL: string;
-	public gravatarID: string;
-	public url: string;
-	public htmlURL: string;
-	public followersURL: string;
-	public followingURL: string;
-	public gistsURL: string;
-	public starredURL: string;
-	public subscriptionsURL: string;
-	public organizationsURL: string;
-	public reposURL: string;
-	public eventsURL: string;
-	public receivedEventsURL: string;
-	public type: string;
-	public siteAdmin: boolean;
+	login: string;
+	id: number;
+	nodeID: string;
+	avatarURL: string;
+	gravatarID: string;
+	url: string;
+	htmlURL: string;
+	followersURL: string;
+	followingURL: string;
+	gistsURL: string;
+	starredURL: string;
+	subscriptionsURL: string;
+	organizationsURL: string;
+	reposURL: string;
+	eventsURL: string;
+	receivedEventsURL: string;
+	type: string;
+	siteAdmin: boolean;
 
 	constructor(data: any) {
 		this.login = data.login;
