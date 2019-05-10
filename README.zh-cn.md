@@ -17,7 +17,7 @@ Github Gist Explorer需要GitHub用户名和GitHub令牌来访问你的GitHub Gi
 请继续阅读下面的内容来了解如何设置Github Gist Explorer。
 
 ## 获取GitHub用户名
-实际上就是GitHub的登录用户名，你可以在登录GitHub后的到它。如下图所示，在*https://github.com/*后面的就是你的用户名。
+实际上就是GitHub的登录用户名，你可以在登录GitHub后的到它。如下图所示，在 *https://github.com/* 后面的就是你的用户名。
 ![Get User Name](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-2.png)
 
 ## 一步一步获取GitHub令牌
