@@ -1,7 +1,7 @@
 {
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
-	"description": "Create, open and edit Gists",
+	"description": "Management your GitHub Gists with Visual Studio Code",
 	"version": "0.0.1",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
