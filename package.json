@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -241,7 +241,7 @@
 							"False"
 						]
 					},
-					"github.userName": {
+					"github.username": {
 						"type": "string",
 						"default": ""
 					},

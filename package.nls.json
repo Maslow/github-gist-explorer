@@ -1,8 +1,8 @@
 {
 	"extension.command.refresh": "Refresh",
-	"extension.command.sort_by_label": "Sort by label",
-	"extension.command.sort_by_last_updated": "Sort by last updated",
-	"extension.command.sort_by_created": "Sort by created",
+	"extension.command.sort_by_label": "Sort by Label",
+	"extension.command.sort_by_last_updated": "Sort by Last Updated",
+	"extension.command.sort_by_created": "Sort by Created",
 	"extension.command.ascending": "Ascending",
 	"extension.command.descending": "Descending",
 	"extension.command.add_gist": "Add Gist",

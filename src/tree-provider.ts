@@ -54,7 +54,7 @@ export class GistTreeProvider implements TreeDataProvider<GistTreeItem> {
 					});
 			})
 			.catch(error => {
-				window.showErrorMessage(error.message);
+				window.showInformationMessage(error.message);
 				commands.executeCommand('workbench.action.openSettings', `@ext:${constans.EXTENSION_ID}`)
 				return Promise.resolve();
 			})

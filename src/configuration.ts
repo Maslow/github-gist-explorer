@@ -20,13 +20,13 @@ export interface Configuration {
 
 export class ConfigurationManager {
 	check(): Promise<Configuration> {
-		const username: string = this.getGitHub('username');
+		const username: string = this.getGitHub('username') || '';
 		if (username.length === 0) {
 			const msg = localize('error.github_username_missing', 'Please specify the username of GitHub.');
 			return Promise.reject(new Error(msg));
 		}
 
-		const token: string = this.getGitHub('token');
+		const token: string = this.getGitHub('token') || '';
 		if (token.length === 0) {
 			const msg = localize('error.github_token_missing', 'Please specify the token of GitHub.');
 			return Promise.reject(new Error(msg));
