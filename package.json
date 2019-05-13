@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -134,7 +134,72 @@
 			}
 		],
 		"menus": {
-			"commandPalette": [],
+			"commandPalette": [
+				{
+					"command": "GitHubGistExplorer.refresh",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.ascending",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.descending",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByLabel",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByLastUpdated",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.sortByCreated",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.addGist",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.editGist",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.deleteGist",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.starGist",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.unstarGist",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.addFile",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.editFile",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.deleteFile",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.renameFile",
+					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.reloadFile",
+					"when": "false"
+				}
+			],
 			"editor/title": [],
 			"view/title": [
 				{
