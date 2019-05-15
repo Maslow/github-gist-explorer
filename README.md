@@ -36,3 +36,6 @@ This extension requires a Personal Access Token from your GitHub account. You ca
 ## Setup Github Gist Explorer
 For now, You have the user name and personal access token of GitHub. Please input on the extension setting page.
 ![Setup Extension](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-5.png)
+
+## How to add gist
+![Add Gist](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/add-gist.gif)
