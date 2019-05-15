@@ -5,11 +5,11 @@
 
 ## Key Features
 ```
-1. List all your GitHub Gist.
+1. List all your GitHub gists.
 2. Star or unstar the gist.
 3. Create secet and public gist.
 4. Edit or delete the gist.
-5. Create, edit, delete, rename the file of Gist.
+5. Create, edit, delete, rename the files of gist.
 ```
 
 ## How to use

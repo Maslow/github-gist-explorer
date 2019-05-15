@@ -296,7 +296,7 @@ export class GitHubGistExplorer {
 				}
 			})
 			.then(doc => {
-				return this.showTextDocument(doc, { preview: true });
+				this.showTextDocument(doc, { preview: true });
 			})
 			.catch(error => {
 				this.showErrorMessage(error.message);
@@ -305,7 +305,17 @@ export class GitHubGistExplorer {
 
 	deleteFile(node: GistTreeItem) {
 		const file: modules.GitHubGistFile = node.metadata as modules.GitHubGistFile;
-		api.deleteFileWaitable(file.gistID, file.filename);
+		api.deleteFileWaitable(file.gistID, file.filename)
+			.then(() => {
+				const home: string = this.getHomeDirectory();
+				return filesystem.rmrf(`${home}/${file.gistID}/${file.filename}`);
+			})
+			.then(() => {
+				this.treeProvider.refresh();
+			})
+			.catch(error => {
+				this.showErrorMessage(error.message);
+			});
 	}
 
 	renameFile(node: GistTreeItem) {
@@ -322,6 +332,10 @@ export class GitHubGistExplorer {
 					return Promise.reject(new Error(msg));
 				}
 				return api.renameFileWaitable(file.gistID, file.filename, value);
+			})
+			.then(() => {
+				const home: string = this.getHomeDirectory();
+				return filesystem.rmrf(`${home}/${file.gistID}/${file.filename}`);
 			})
 			.then(() => {
 				this.treeProvider.refresh();
@@ -353,8 +367,6 @@ export class GitHubGistExplorer {
 				const uri = Uri.file(filename);
 				return this.openTextDocument(uri);
 			});
-
-		console.log('sdfsdfsdfsdf');
 	}
 
 	onDidChangeConfiguration(event: ConfigurationChangeEvent) {
