@@ -3,6 +3,8 @@
 *使用Visual Studio Code管理你的GitHub Gists*
 ![Screenshot](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-1.png)
 
+*如果新欢这个扩展，请不吝赐星！*
+
 ## 功能描述
 ```
 1. 列出你拥有的gist。
