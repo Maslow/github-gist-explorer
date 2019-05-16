@@ -10,6 +10,8 @@
 3. Create secet and public gist.
 4. Edit or delete the gist.
 5. Create, edit, delete, rename the files of gist.
+6. You can create gist from file in activity editor directly.
+7. You can create gist from the selection!
 ```
 
 ## How to use
@@ -39,3 +41,6 @@ For now, You have the user name and personal access token of GitHub. Please inpu
 
 ## How to add gist
 ![Add Gist](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/add-gist.gif)
+
+## Clip and Save!
+![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)

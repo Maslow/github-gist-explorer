@@ -13,14 +13,17 @@ import * as filesystem from './file-system';
 
 import { promisify } from './promisify';
 
+import ConfigurationManager from './configuration';
+
+import { GitHubGistShortcut } from './shortcut';
 import { GistTreeProvider, GistTreeItem, GistTreeSortBy } from './tree-provider';
 import { GistContentProvider } from './content-provider';
-
-import ConfigurationManager from './configuration';
 
 export class GitHubGistExplorer {
 	public readonly treeProvider: GistTreeProvider = new GistTreeProvider();
 	public readonly contentProvider: GistContentProvider = new GistContentProvider();
+
+	public readonly shortcut: GitHubGistShortcut = new GitHubGistShortcut();
 
 	public readonly documentsSaving: Array<string> = new Array();
 
@@ -438,6 +441,9 @@ export function activate(context: ExtensionContext) {
 
 	// **********************************************************************
 	// commands
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.saveIt', explorer.shortcut.saveAndClip.bind(explorer.shortcut, true, explorer.treeProvider));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.clipIt', explorer.shortcut.saveAndClip.bind(explorer.shortcut, false, explorer.treeProvider));
+
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.refresh', explorer.refresh.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByLabel', explorer.sortByLabel.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByLastUpdated', explorer.sortByLastUpdated.bind(explorer));

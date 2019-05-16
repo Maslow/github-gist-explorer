@@ -10,6 +10,11 @@ import { waitfiy } from './waitfiy';
 import * as constans from './constans';
 import * as modules from './modules';
 
+export interface File {
+	name: string
+	content: string
+}
+
 export default class Gist {
 	constructor(public readonly token?: string) {
 	}
@@ -72,19 +77,30 @@ export default class Gist {
 			});
 	}
 
-	add(type: string, description: string): Promise<modules.GitHubGist> {
+	add(type: string, description: string, files?: Array<File>): Promise<modules.GitHubGist> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
-		const file = constans.CLASSIC_MOVIE_QUOTES[Math.floor(Math.random() * 100)];
 
 		const data = {
 			description,
 			'public': type === constans.GistType.Public,
-			files: {
+			files: {}
+		}
+
+		if (files === undefined) {
+			const file = constans.CLASSIC_MOVIE_QUOTES[Math.floor(Math.random() * 100)];
+			data.files = {
 				[file.name]: {
 					content: file.words
 				}
-			}
+			};
+		} else {
+			data.files = files.reduce((pv, cv) => {
+				pv[cv.name] = {
+					content: cv.content
+				}
+				return pv;
+			}, {});
 		}
 
 		return axios.post(`${constans.GITHUB_API_URL}/gists`, data, options)
@@ -97,7 +113,7 @@ export default class Gist {
 			});
 	}
 
-	update(gistID: string, description: string): Promise<void> {
+	update(gistID: string, description: string): Promise<modules.GitHubGist> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
 		const data = {
@@ -111,7 +127,7 @@ export default class Gist {
 					return Promise.reject(new Error(response.statusText));
 				}
 
-				return Promise.resolve();
+				return Promise.resolve(new modules.GitHubGist(response.data));
 			});
 	}
 
@@ -154,7 +170,7 @@ export default class Gist {
 			});
 	}
 
-	updateFile(gistID: string, filename: string, content: string): Promise<void> {
+	updateFile(gistID: string, filename: string, content: string): Promise<modules.GitHubGist> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
 		const data = {
@@ -170,7 +186,7 @@ export default class Gist {
 					return Promise.reject(new Error(response.statusText));
 				}
 
-				return Promise.resolve();
+				return Promise.resolve(new modules.GitHubGist(response.data));
 			});
 	}
 
@@ -244,12 +260,12 @@ export function listStarred(): Promise<modules.GitHubGist[]> {
 	return (new Gist(token)).listStarred();
 }
 
-export function add(type: string, description: string): Promise<modules.GitHubGist> {
+export function add(type: string, description: string, files?: Array<File>): Promise<modules.GitHubGist> {
 	const token: string = workspace.getConfiguration('github').get('token');
-	return (new Gist(token)).add(type, description);
+	return (new Gist(token)).add(type, description, files);
 }
 
-export function update(gistID: string, description: string): Promise<void> {
+export function update(gistID: string, description: string): Promise<modules.GitHubGist> {
 	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).update(gistID, description);
 }
@@ -268,7 +284,8 @@ export function unstar(gistID: string): Promise<void> {
 	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).unstar(gistID);
 }
-export function updateFile(gistID: string, filename: string, content: string): Promise<void> {
+
+export function updateFile(gistID: string, filename: string, content: string): Promise<modules.GitHubGist> {
 	const token: string = workspace.getConfiguration('github').get('token');
 	return (new Gist(token)).updateFile(gistID, filename, content);
 }

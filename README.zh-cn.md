@@ -10,6 +10,8 @@
 3. 创建公开/隐私gist。
 4. 编辑/删除gist。
 5. 创建、编辑、删除、重命名gist中的文件。
+6. 支持从活动的编辑器直接创建gist。
+7. 支持从选定文本创建gist。
 ```
 
 ## 使用说明
@@ -36,3 +38,9 @@ Github Gist Explorer需要GitHub用户名和GitHub令牌来访问你的GitHub Gi
 ## 设置Github Gist Explorer
 现在，请在扩展配置页输入你得到的GitHub用户名和令牌输入。
 ![Setup Extension](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-5.png)
+
+## 如何添加gist
+![Add Gist](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/add-gist.gif)
+
+## 保存和剪藏！
+![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)

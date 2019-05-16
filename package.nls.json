@@ -1,4 +1,6 @@
 {
+	"extension.shortcut.save_it": "Github Gist Explorer: Save It",
+	"extension.shortcut.clip_it": "Github Gist Explorer: Clip It",
 	"extension.command.refresh": "Refresh",
 	"extension.command.sort_by_label": "Sort by Label",
 	"extension.command.sort_by_last_updated": "Sort by Last Updated",

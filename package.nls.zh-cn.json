@@ -1,4 +1,6 @@
 {
+	"extension.shortcut.save_it": "Github Gist Explorer: 保存",
+	"extension.shortcut.clip_it": "Github Gist Explorer: 剪藏",
 	"extension.command.refresh": "刷新",
 	"extension.command.ascending": "升序",
 	"extension.command.descending": "降序",
