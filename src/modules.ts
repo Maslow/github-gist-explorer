@@ -35,11 +35,11 @@ export class GitHubGist {
 			this.gitPullURL = data.git_pull_url;
 			this.gitPushURL = data.git_push_url;
 			this.htmlURL = data.html_url;
-			this.files = Object.keys(data.files).map(k => new GitHubGistFile(data.id, data.files[k]));
+			this.files = data.files === undefined ? [] : Object.keys(data.files).map(k => new GitHubGistFile(data.id, data.files[k]));
 			this.public = data.public;
 			this.createdAt = moment(data.created_at);
 			this.updatedAt = moment(data.updated_at);
-			this.description = data.description;
+			this.description = data.description || '';
 			this.comments = data.comments;
 			this.user = data.user;
 			this.commentsURL = data.comments_url;

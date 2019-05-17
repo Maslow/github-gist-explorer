@@ -46,3 +46,6 @@ Github Gist Explorer需要GitHub用户名和GitHub令牌来访问你的GitHub Gi
 
 ## 保存和剪藏！
 ![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)
+
+## 从剪切板创建
+![Paste](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/paste.gif)

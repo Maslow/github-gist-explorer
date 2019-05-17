@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -55,6 +55,10 @@
 			{
 				"command": "GitHubGistExplorer.shortcut.clipIt",
 				"title": "%extension.shortcut.clip_it%"
+			},
+			{
+				"command": "GitHubGistExplorer.shortcut.pasteIt",
+				"title": "%extension.shortcut.paste_it%"
 			},
 			{
 				"command": "GitHubGistExplorer.refresh",
@@ -113,6 +117,10 @@
 				"title": "%extension.command.unstar_gist%"
 			},
 			{
+				"command": "GitHubGistExplorer.paste",
+				"title": "%extension.command.paste%"
+			},
+			{
 				"command": "GitHubGistExplorer.addFile",
 				"title": "%extension.command.add_file%"
 			},
@@ -149,6 +157,9 @@
 				{
 					"command": "GitHubGistExplorer.shortcut.clipIt",
 					"when": "editorHasSelection"
+				},
+				{
+					"command": "GitHubGistExplorer.shortcut.pasteIt"
 				},
 				{
 					"command": "GitHubGistExplorer.refresh",
@@ -213,6 +224,10 @@
 				{
 					"command": "GitHubGistExplorer.reloadFile",
 					"when": "false"
+				},
+				{
+					"command": "GitHubGistExplorer.paste",
+					"when": "false"
 				}
 			],
 			"editor/title": [],
@@ -272,6 +287,11 @@
 					"command": "GitHubGistExplorer.deleteGist",
 					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
 					"group": "GitHubGistRoot@3"
+				},
+				{
+					"command": "GitHubGistExplorer.paste",
+					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
+					"group": "GitHubGistFilePaste@1"
 				},
 				{
 					"command": "GitHubGistExplorer.addFile",
@@ -361,6 +381,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
+		"clipboardy": "^2.0.0",
 		"mkdirp": "^0.5.1",
 		"moment": "^2.24.0",
 		"rimraf": "^2.6.2",

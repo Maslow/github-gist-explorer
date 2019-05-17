@@ -6,6 +6,8 @@ const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 import { commands, extensions, window, workspace } from 'vscode';
 import { ConfigurationChangeEvent, Disposable, ExtensionContext, TextDocument, Uri } from 'vscode';
 
+import * as clipboardy from 'clipboardy';
+
 import * as api from './gist-api';
 import * as modules from './modules';
 import * as constans from './constans';
@@ -31,6 +33,8 @@ export class GitHubGistExplorer {
 
 	public readonly showErrorMessage: any;
 	public readonly showWarningMessage: any;
+	public readonly showInformationMessage: any;
+
 	public readonly showInputBox: any;
 	public readonly showQuickPick: any;
 	public readonly showTextDocument: any;
@@ -41,6 +45,7 @@ export class GitHubGistExplorer {
 
 		this.showErrorMessage = promisify(window.showErrorMessage, window);
 		this.showWarningMessage = promisify(window.showWarningMessage, window);
+		this.showInformationMessage = promisify(window.showInformationMessage, window);
 
 		this.showInputBox = promisify(window.showInputBox, window);
 		this.showQuickPick = promisify(window.showQuickPick, window);
@@ -220,7 +225,22 @@ export class GitHubGistExplorer {
 			});
 	}
 
-	addFile(node: GistTreeItem) {
+	paste(node: GistTreeItem) {
+		clipboardy.read()
+			.then(content => {
+				if (content.trim().length === 0) {
+					const msg = localize('error.empty_clipboard', 'Nothing to paste');
+					this.showInformationMessage(msg);
+				} else {
+					this.addFile(node, content);
+				}
+			})
+			.catch(error => {
+				this.showErrorMessage(error.message);
+			});
+	}
+
+	addFile(node: GistTreeItem, content?: string) {
 		const options = {
 			prompt: localize('explorer.add_file_name', 'Provide the name for new file here')
 		}
@@ -232,7 +252,7 @@ export class GitHubGistExplorer {
 				}
 
 				const gist = node.metadata as modules.GitHubGist
-				return api.updateFileWaitable(gist.id, filename, filename);
+				return api.updateFileWaitable(gist.id, filename, content === undefined ? filename : content);
 			})
 			.then(() => {
 				this.treeProvider.refresh();
@@ -441,8 +461,9 @@ export function activate(context: ExtensionContext) {
 
 	// **********************************************************************
 	// commands
-	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.saveIt', explorer.shortcut.saveAndClip.bind(explorer.shortcut, true, explorer.treeProvider));
-	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.clipIt', explorer.shortcut.saveAndClip.bind(explorer.shortcut, false, explorer.treeProvider));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.saveIt', explorer.shortcut.saveIt.bind(explorer.shortcut, explorer.treeProvider));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.clipIt', explorer.shortcut.clipIt.bind(explorer.shortcut, explorer.treeProvider));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.pasteIt', explorer.shortcut.pasteIt.bind(explorer.shortcut, explorer.treeProvider));
 
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.refresh', explorer.refresh.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.sortByLabel', explorer.sortByLabel.bind(explorer));
@@ -455,6 +476,7 @@ export function activate(context: ExtensionContext) {
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.deleteGist', explorer.deleteGist.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.starGist', explorer.starGist.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.unstarGist', explorer.unstarGist.bind(explorer));
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.paste', explorer.paste.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.addFile', explorer.addFile.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.editFile', explorer.editFile.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.deleteFile', explorer.deleteFile.bind(explorer));

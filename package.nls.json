@@ -1,6 +1,7 @@
 {
-	"extension.shortcut.save_it": "Github Gist Explorer: Save It",
-	"extension.shortcut.clip_it": "Github Gist Explorer: Clip It",
+	"extension.shortcut.save_it": "Github Gist Explorer: Save It!",
+	"extension.shortcut.clip_it": "Github Gist Explorer: Clip It!",
+	"extension.shortcut.paste_it": "Github Gist Explorer: Paste It!",
 	"extension.command.refresh": "Refresh",
 	"extension.command.sort_by_label": "Sort by Label",
 	"extension.command.sort_by_last_updated": "Sort by Last Updated",
@@ -12,6 +13,7 @@
 	"extension.command.delete_gist": "Delete Gist",
 	"extension.command.star_gist": "Star Gist",
 	"extension.command.unstar_gist": "Unstar Gist",
+	"extension.command.paste": "Paste",
 	"extension.command.add_file": "Add File",
 	"extension.command.edit_file": "Edit File",
 	"extension.command.delete_file": "Delete File",

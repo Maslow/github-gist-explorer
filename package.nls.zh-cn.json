@@ -1,6 +1,7 @@
 {
-	"extension.shortcut.save_it": "Github Gist Explorer: 保存",
-	"extension.shortcut.clip_it": "Github Gist Explorer: 剪藏",
+	"extension.shortcut.save_it": "Github Gist Explorer: 保存当前文件内容",
+	"extension.shortcut.clip_it": "Github Gist Explorer: 剪藏当前选定文本",
+	"extension.shortcut.paste_it": "Github Gist Explorer: 从剪切板创建",
 	"extension.command.refresh": "刷新",
 	"extension.command.ascending": "升序",
 	"extension.command.descending": "降序",
@@ -12,6 +13,7 @@
 	"extension.command.delete_gist": "删除",
 	"extension.command.star_gist": "收藏",
 	"extension.command.unstar_gist": "取消收藏",
+	"extension.command.paste": "粘贴",
 	"extension.command.add_file": "新建文件",
 	"extension.command.edit_file": "编辑文件",
 	"extension.command.delete_file": "删除文件",

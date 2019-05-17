@@ -3,7 +3,7 @@
 *Management your GitHub Gists with Visual Studio Code*
 ![Screenshot](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/guide-1.png)
 
-*Please star the repository whether you like this extensions!*
+*Please star the repository whether you like this extension!*
 
 ## Key Features
 ```
@@ -46,3 +46,6 @@ For now, You have the user name and personal access token of GitHub. Please inpu
 
 ## Clip and Save!
 ![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)
+
+## Create from clipboard
+![Paste](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/paste.gif)

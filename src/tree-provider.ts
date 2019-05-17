@@ -146,15 +146,7 @@ export class GistTreeItem extends TreeItem {
 			this.contextValue = 'GitHubGistRoot';
 			this.collapsibleState = TreeItemCollapsibleState.Collapsed;
 
-			if (metadata.description.length > 0) {
-				this.label = metadata.description;
-			} else if (metadata.files.length === 1) {
-				this.label = metadata.files[0].filename;
-			} else if (metadata.files.length > 0) {
-				this.label = `${metadata.files[0].filename} and ${metadata.files.length - 1} files`;
-			} else {
-				this.label = '(Empty Gist)';
-			}
+			this.label = metadata.label;
 
 			if (starred) {
 				this.contextValue = 'GitHubGistRootStarrd';
