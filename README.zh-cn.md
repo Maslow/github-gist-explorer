@@ -14,6 +14,7 @@
 5. 创建、编辑、删除、重命名gist中的文件。
 6. 支持从活动的编辑器直接创建gist。
 7. 支持从选定文本创建gist。
+8. 支持从剪切板创建gist。
 ```
 
 ## 使用说明
@@ -48,4 +49,7 @@ Github Gist Explorer需要GitHub用户名和GitHub令牌来访问你的GitHub Gi
 ![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)
 
 ## 从剪切板创建
+目前有两种方法可以从剪切板创建gist。
+1. 在命令面板中运行命令。
+2. 使用右键菜单。
 ![Paste](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/paste.gif)

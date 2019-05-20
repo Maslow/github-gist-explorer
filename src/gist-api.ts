@@ -54,27 +54,55 @@ export default class Gist {
 	list(username: string): Promise<modules.GitHubGist[]> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
-		return axios.get(`${constans.GITHUB_API_URL}/users/${username}/gists`, options)
-			.then(response => {
-				if (response.status !== 200) {
-					return Promise.resolve([]);
-				}
+		const p = function (page: number, results: Array<modules.GitHubGist>) {
+			return axios.get(`${constans.GITHUB_API_URL}/users/${username}/gists?page=${page}`, options)
+				.then(response => {
+					if (response.status !== 200) {
+						return Promise.resolve([]);
+					}
 
-				return response.data.map(value => new modules.GitHubGist(value));
-			});
+					const data = response.data.map(value => new modules.GitHubGist(value));
+					return Promise.resolve(data);
+				})
+				.then(data => {
+					if (data.length === 0) {
+						return Promise.resolve(results);
+					}
+					return p(page + 1, [...results, ...data]);
+				})
+				.catch(error => {
+					return Promise.resolve([]);
+				});
+		}
+
+		return p(1, []);
 	}
 
 	listStarred(): Promise<modules.GitHubGist[]> {
 		const options: AxiosRequestConfig = this.createRequestConfig();
 
-		return axios.get(`${constans.GITHUB_API_URL}/gists/starred`, options)
-			.then(response => {
-				if (response.status !== 200) {
-					return Promise.resolve([]);
-				}
+		const p = function (page: number, results: Array<modules.GitHubGist>) {
+			return axios.get(`${constans.GITHUB_API_URL}/gists/starred?page=${page}`, options)
+				.then(response => {
+					if (response.status !== 200) {
+						return Promise.resolve([]);
+					}
 
-				return response.data.map(value => new modules.GitHubGist(value));
-			});
+					const data = response.data.map(value => new modules.GitHubGist(value));
+					return Promise.resolve(data);
+				})
+				.then(data => {
+					if (data.length === 0) {
+						return Promise.resolve(results);
+					}
+					return p(page + 1, [...results, ...data]);
+				})
+				.catch(error => {
+					return Promise.resolve([]);
+				});
+		}
+
+		return p(1, []);
 	}
 
 	add(type: string, description: string, files?: Array<File>): Promise<modules.GitHubGist> {

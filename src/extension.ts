@@ -461,6 +461,7 @@ export function activate(context: ExtensionContext) {
 
 	// **********************************************************************
 	// commands
+	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.newGist', explorer.addGist.bind(explorer));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.saveIt', explorer.shortcut.saveIt.bind(explorer.shortcut, explorer.treeProvider));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.clipIt', explorer.shortcut.clipIt.bind(explorer.shortcut, explorer.treeProvider));
 	subscriber.register(commands.registerCommand, commands, 'GitHubGistExplorer.shortcut.pasteIt', explorer.shortcut.pasteIt.bind(explorer.shortcut, explorer.treeProvider));

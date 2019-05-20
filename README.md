@@ -14,6 +14,7 @@
 5. Create, edit, delete, rename the files of gist.
 6. You can create gist from file in activity editor directly.
 7. You can create gist from the selection!
+8. You can create gist from the clipboard.
 ```
 
 ## How to use
@@ -48,4 +49,7 @@ For now, You have the user name and personal access token of GitHub. Please inpu
 ![Clip & Save](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/clip-and-save.gif)
 
 ## Create from clipboard
+There are two ways to create gist from clipboard.
+1. Run the command from command palette.
+2. Run the command from right-click menu.
 ![Paste](https://raw.githubusercontent.com/k9982874/github-gist-explorer/master/media/paste.gif)

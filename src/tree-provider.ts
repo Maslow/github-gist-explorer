@@ -119,8 +119,10 @@ export class GistTreeProvider implements TreeDataProvider<GistTreeItem> {
 			}
 			return items;
 		} else {
-			const items = this.starredItems.concat(this.items)
-			return items.map(value => new GistTreeItem(value));
+			const items = this.items.map(value => new GistTreeItem(value));
+			const starredItems = this.starredItems.map(value => new GistTreeItem(value, true));
+
+			return [...starredItems, ...items];
 		}
 	}
 }

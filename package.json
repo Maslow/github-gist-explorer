@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"icon": "media/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -48,6 +48,10 @@
 			"explorer": []
 		},
 		"commands": [
+			{
+				"command": "GitHubGistExplorer.shortcut.newGist",
+				"title": "%extension.shortcut.new_gist%"
+			},
 			{
 				"command": "GitHubGistExplorer.shortcut.saveIt",
 				"title": "%extension.shortcut.save_it%"
@@ -151,6 +155,9 @@
 		],
 		"menus": {
 			"commandPalette": [
+				{
+					"command": "GitHubGistExplorer.shortcut.newGist"
+				},
 				{
 					"command": "GitHubGistExplorer.shortcut.saveIt"
 				},

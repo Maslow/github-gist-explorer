@@ -1,4 +1,5 @@
 {
+	"extension.shortcut.new_gist": "Github Gist Explorer: 新建Gist",
 	"extension.shortcut.save_it": "Github Gist Explorer: 保存当前文件内容",
 	"extension.shortcut.clip_it": "Github Gist Explorer: 剪藏当前选定文本",
 	"extension.shortcut.paste_it": "Github Gist Explorer: 从剪切板创建",
