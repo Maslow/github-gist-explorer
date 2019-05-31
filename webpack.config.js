@@ -7,6 +7,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -44,6 +45,7 @@ const config = {
     }]
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       $dirname: '__dirname',
     })
