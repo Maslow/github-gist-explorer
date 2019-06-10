@@ -2,7 +2,7 @@
 	"name": "github-gist-explorer",
 	"displayName": "Github Gist Explorer",
 	"description": "Management your GitHub Gists with Visual Studio Code",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"icon": "media/static/img/icon.png",
 	"publisher": "k9982874",
 	"author": {
@@ -36,20 +36,25 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"viewsContainers": {
-			"activitybar": [{
-				"id": "github-gist-explorer",
-				"title": "GitHub Gist Explorer",
-				"icon": "media/static/img/github.svg"
-			}]
+			"activitybar": [
+				{
+					"id": "github-gist-explorer",
+					"title": "GitHub Gist Explorer",
+					"icon": "media/static/img/github.svg"
+				}
+			]
 		},
 		"views": {
-			"github-gist-explorer": [{
-				"id": "GitHubGistExplorer",
-				"name": "Gist List"
-			}],
+			"github-gist-explorer": [
+				{
+					"id": "GitHubGistExplorer",
+					"name": "Gist List"
+				}
+			],
 			"explorer": []
 		},
-		"commands": [{
+		"commands": [
+			{
 				"command": "GitHubGistExplorer.shortcut.newGist",
 				"title": "%extension.shortcut.new_gist%"
 			},
@@ -167,7 +172,8 @@
 			}
 		],
 		"menus": {
-			"commandPalette": [{
+			"commandPalette": [
+				{
 					"command": "GitHubGistExplorer.shortcut.newGist"
 				},
 				{
@@ -258,7 +264,8 @@
 				}
 			],
 			"editor/title": [],
-			"view/title": [{
+			"view/title": [
+				{
 					"command": "GitHubGistExplorer.refresh",
 					"when": "view == GitHubGistExplorer",
 					"group": "navigation"
@@ -293,7 +300,8 @@
 					"when": "view == GitHubGistExplorer"
 				}
 			],
-			"view/item/context": [{
+			"view/item/context": [
+				{
 					"command": "GitHubGistExplorer.editGist",
 					"when": "view == GitHubGistExplorer && viewItem =~ /^GitHubGistRoot/",
 					"group": "GitHubGistRoot@1"
@@ -355,41 +363,43 @@
 				}
 			]
 		},
-		"configuration": [{
-			"title": "GitHub Gist Explorer",
-			"properties": {
-				"GithubGistExplorer.github.username": {
-					"type": "string",
-					"default": ""
-				},
-				"GithubGistExplorer.github.token": {
-					"type": "string",
-					"default": ""
-				},
-				"GithubGistExplorer.explorer.sortBy": {
-					"type": "string",
-					"default": "lastUpdated",
-					"enum": [
-						"Label",
-						"Last Updated",
-						"Created"
-					]
-				},
-				"GithubGistExplorer.explorer.ascending": {
-					"type": "boolean",
-					"default": false
-				},
-				"GithubGistExplorer.import.excludes": {
-					"type": "array",
-					"default": [
-						".git",
-						".gradle",
-						".vscode",
-						"node_modules"
-					]
+		"configuration": [
+			{
+				"title": "GitHub Gist Explorer",
+				"properties": {
+					"GithubGistExplorer.github.username": {
+						"type": "string",
+						"default": ""
+					},
+					"GithubGistExplorer.github.token": {
+						"type": "string",
+						"default": ""
+					},
+					"GithubGistExplorer.explorer.sortBy": {
+						"type": "string",
+						"default": "lastUpdated",
+						"enum": [
+							"Label",
+							"Last Updated",
+							"Created"
+						]
+					},
+					"GithubGistExplorer.explorer.ascending": {
+						"type": "boolean",
+						"default": false
+					},
+					"GithubGistExplorer.import.excludes": {
+						"type": "array",
+						"default": [
+							".git",
+							".gradle",
+							".vscode",
+							"node_modules"
+						]
+					}
 				}
 			}
-		}]
+		]
 	},
 	"scripts": {
 		"watch": "./node_modules/.bin/tsc -watch -p ./",
