@@ -48,7 +48,7 @@
     "retrieve_user": "正在拉取用户数据...",
     "secret": "私有",
     "star_gist": "添加收藏中...",
-    "subscribe_gist": "订阅用户",
+    "subscribe_gist": "请提供想要订阅的用户名。 用户名必须是以下格式\"k9982874\"、\"https://github.com/k9982874\"、\"https://gist.github.com/k9982874\"。",
     "unstar_gist": "取消收藏中...",
     "updating_file": "更新文件中...",
     "updating_gist": "更新中...",
