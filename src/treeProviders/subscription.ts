@@ -69,7 +69,7 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
             return loading("explorer.listing_gist", () => items)
               .then(result => result.map(v => new GistTreeItem(v)));
           } else {
-            return items;
+            return items.map(v => new GistTreeItem(v));
           }
         case "Gist":
           return (element as GistTreeItem).metadata.files.map(f => {

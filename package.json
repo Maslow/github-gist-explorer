@@ -2,7 +2,7 @@
   "name": "github-gist-explorer",
   "displayName": "GitHub Gist Explorer",
   "description": "Management your GitHub gists with Visual Studio Code",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "icon": "media/static/img/icon.png",
   "publisher": "k9982874",
   "author": {
@@ -171,12 +171,20 @@
         "title": "%extension.command.sort_by_created%"
       },
       {
+        "command": "GitHubGistExplorer.viewUser",
+        "title": "%extension.command.view_user%"
+      },
+      {
         "command": "GitHubGistExplorer.subscribeGist",
         "title": "%extension.command.subscribe_gist%"
       },
       {
         "command": "GitHubGistExplorer.unsubscribeGist",
         "title": "%extension.command.unsubscribe_gist%"
+      },
+      {
+        "command": "GitHubGistExplorer.addGist",
+        "title": "%extension.command.add_gist%"
       },
       {
         "command": "GitHubGistExplorer.editGist",
@@ -318,11 +326,19 @@
           "when": "false"
         },
         {
+          "command": "GitHubGistExplorer.viewUser",
+          "when": "false"
+        },
+        {
           "command": "GitHubGistExplorer.subscribeGist",
           "when": "false"
         },
         {
           "command": "GitHubGistExplorer.unsubscribeGist",
+          "when": "false"
+        },
+        {
+          "command": "GitHubGistExplorer.addGist",
           "when": "false"
         },
         {
@@ -451,14 +467,14 @@
           "group": "NavigationMenuGroup1@3"
         },
         {
-          "command": "GitHubGistExplorer.shortcut.newGist",
+          "command": "GitHubGistExplorer.addGist",
           "when": "ExtensionLoaded && view == GistTree",
           "group": "NavigationMenuGroup2@1"
         },
         {
           "command": "GitHubGistExplorer.subscribeGist",
           "when": "ExtensionLoaded && view == SubscriptionTree",
-          "group": "NavigationMenuGroup2@1"
+          "group": "NavigationMenuGroup2@2"
         }
       ],
       "view/item/context": [
@@ -503,9 +519,14 @@
           "group": "GistMenuGroup5@1"
         },
         {
-          "command": "GitHubGistExplorer.unsubscribeGist",
+          "command": "GitHubGistExplorer.viewUser",
           "when": "view == SubscriptionTree && viewItem =~ /^User/",
           "group": "GistMenuGroup6@1"
+        },
+        {
+          "command": "GitHubGistExplorer.unsubscribeGist",
+          "when": "view == SubscriptionTree && viewItem =~ /^User/",
+          "group": "GistMenuGroup6@2"
         },
         {
           "command": "GitHubGistExplorer.editFile",

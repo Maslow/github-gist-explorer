@@ -25,7 +25,7 @@ export default class ShortCut {
 
   private async save(content: string, filename?: string): Promise<IGist> {
     const gist = await VSCode.showQuickPick<IGist>(
-      [ ...this.treeProvider.items, { id: "", label: "New Gist" } ],
+      [ ...this.treeProvider.items, { id: "", label: "New Gist", alwaysShow: true } ],
       { placeHolder: i18n("explorer.pick_gist")}
     );
 

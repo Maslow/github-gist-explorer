@@ -27,7 +27,7 @@ import ShortCut from "./shortcut";
 import HistoryViewProvider from "./historyProvider";
 import ContentProvider from "./contentProvider";
 
-import { GistTreeItem, FileTreeItem, GistTreeProvider, SubscriptionTreeProvider } from "./treeProviders";
+import { UserTreeItem, GistTreeItem, FileTreeItem, GistTreeProvider, SubscriptionTreeProvider } from "./treeProviders";
 
 import { GistSearch, SubscriptionSearch } from "./search";
 
@@ -97,7 +97,13 @@ export class GitHubGistExplorer extends Subscriber {
       });
     }
   }
+  
+  @Command("GitHubGistExplorer.viewUser")
+  viewUser(commandId: string, node: UserTreeItem) {
+    VSCode.executeCommand("vscode.open", Uri.parse(node.metadata.htmlURL));
+  }
 
+  @Command("GitHubGistExplorer.addGist")
   @Command("GitHubGistExplorer.shortcut.newGist")
   addGist() {
     const options = {

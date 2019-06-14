@@ -26,16 +26,16 @@ export interface ITreeProvider<T> {
 }
 
 export class UserTreeItem extends TreeItem {
-  constructor(user: IUser) {
-    super(user.login, TreeItemCollapsibleState.Collapsed);
+  constructor(readonly metadata: IUser) {
+    super(metadata.login, TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = "User";
 
-    this.id = user.id;
-    this.description = user.profile.name;
+    this.id = metadata.id;
+    this.description = metadata.profile.name;
 
-    if (user.avatarURL) {
-      this.iconPath = Uri.parse(user.avatarURL);
+    if (metadata.avatarURL) {
+      this.iconPath = Uri.parse(metadata.avatarURL);
     } else {
       this.iconPath = {
         light: path.join(__filename, process.env.ASSET_PATH, "light/user.svg"),
