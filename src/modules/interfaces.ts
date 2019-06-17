@@ -64,7 +64,7 @@ export interface IHistory {
   committedAt: string;
   changeStatus: IChangeStatus;
   url: string;
-  status?: HistoryStatus;
+  status: HistoryStatus;
   gist?: IGist;
 }
 

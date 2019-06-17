@@ -277,6 +277,19 @@ export function renameFile(gistID: string, filename: string, newFilename: string
     });
 }
 
+export function retrieveComment(gistID: string): Promise<any[]> {
+  const options: AxiosRequestConfig = createRequestConfig();
+
+  return axios.get(`${constans.GITHUB_API_URL}/gists/${gistID}/comments`, options)
+    .then(response => {
+      if (response.status !== 200) {
+        return Promise.reject(new Error(response.statusText));
+      }
+
+      return Promise.resolve(response.data);
+    });
+}
+
 export const downloadFileWaitable = waitify("explorer.downloading_file", downloadFile);
 export const retrieveUserWaitable = waitify("explorer.retrieve_user", retrieveUser);
 export const listWaitable = waitify("explorer.listing_gist", list);
@@ -290,3 +303,4 @@ export const unstarWaitable = waitify("explorer.unstar_gist", unstar);
 export const updateFileWaitable = waitify("explorer.updating_file", updateFile);
 export const deleteFileWaitable = waitify("explorer.deleting_file", deleteFile);
 export const renameFileWaitable = waitify("explorer.renaming_file", renameFile);
+export const retrieveCommentWaitable = waitify("explorer.retrieve_comment", retrieveComment);

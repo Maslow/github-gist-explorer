@@ -12,7 +12,14 @@ module.exports = merge(baseConfig, {
     minimizer: [
       new TerserPlugin({
         test: /\.js(\?.*)?$/i,
-        exclude: /\/src/
+        exclude: /\/src/,
+        terserOptions: {
+          // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+          extractComments: 'all',
+          compress: {
+            drop_console: true
+          }
+	      }
       }),
       new OptimizeCSSAssetsPlugin({})
     ],

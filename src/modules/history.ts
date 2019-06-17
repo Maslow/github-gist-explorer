@@ -13,7 +13,7 @@ export default class HistoryModule implements IHistory {
     deletions: 0
   };
   url = "";
-  status?: HistoryStatus;
+  status: HistoryStatus = HistoryStatus.Unknown;
   gist?: IGist;
 
   constructor(data?: any) {
