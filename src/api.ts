@@ -34,7 +34,7 @@ export function downloadFile(url: string): Promise<string> {
     (data, headers) => data
   ];
 
-  return axios.get(url, options)
+  return axios.get(encodeURI(url), options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
