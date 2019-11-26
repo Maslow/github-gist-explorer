@@ -1,12 +1,12 @@
-import i18n from "../i18n";
+import i18n from '../i18n';
 
-import { window, Disposable, QuickPickItem } from "vscode";
+import { window, Disposable, QuickPickItem } from 'vscode';
 
-import * as VSCode from "../vscode";
+import * as VSCode from '../vscode';
 
-import { ITreeProvider } from "../treeProviders";
+import { ITreeProvider } from '../treeProviders';
 
-import { IGist, IFile } from "../modules";
+import { IGist, IFile } from '../modules';
 
 export interface IGistSearchNode extends QuickPickItem {
   label: string;
@@ -35,7 +35,7 @@ export class GistSearch {
 
     const p = new Promise<IGistSearchNode | undefined>(resolve => {
       const input = window.createQuickPick<IGistSearchNode>();
-      input.placeholder = i18n("explorer.search");
+      input.placeholder = i18n('explorer.search');
       disposables.push(
         input.onDidChangeValue(value => {
           input.items = this.onDidChangeValue(value);
@@ -58,7 +58,7 @@ export class GistSearch {
 
     p.then(selected => {
       if (selected) {
-        VSCode.executeCommand("GitHubGistExplorer.editFile", selected);
+        VSCode.execute('GitHubGistExplorer.editFile', selected);
       }
     })
     .finally(() => {

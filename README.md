@@ -5,6 +5,7 @@
 
 **Please star the repository whether you like this extension!**
 
+**20191126 New Feature: Custom the API address and Sync the gist manually**  
 **20190614 New Feature: Search in the gists or subscriptions**  
 **20190613 New Feature: Subscribe the gist**  
 **20190610 New Feature: Import/Export gist**  

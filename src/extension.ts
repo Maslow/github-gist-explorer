@@ -1,78 +1,80 @@
-"use strict";
+'use strict';
 
-import i18n from "./i18n";
+import i18n from './i18n';
 
-import { ConfigurationChangeEvent, ExtensionContext, FileChangeEvent, FileChangeType, Uri } from "vscode";
+import { ConfigurationChangeEvent, ExtensionContext, FileChangeEvent, FileChangeType, Uri } from 'vscode';
 
-import { Command, Event, Extension, FileSystemProvider, Subscriber, TextDocumentContentProvider, TreeDataProvider, WebviewPanel } from "vscode-extension-decorator";
+import { Command, Event, Extension, FileSystemProvider, Subscriber, TextDocumentContentProvider, TreeDataProvider, WebviewPanel } from 'vscode-extension-decorator';
 
-import * as clipboardy from "clipboardy";
+import * as clipboardy from 'clipboardy';
 
-import * as filesystem from "./filesystem";
+import * as filesystem from './filesystem';
 
-import * as constans from "./constans";
-import * as api from "./api";
-import * as VSCode from "./vscode";
+import * as constans from './constans';
+import * as api from './api';
+import * as VSCode from './vscode';
 
-import { loading } from "./waitify";
+import { loading } from './waitify';
 
-import { IGist, IFile } from "./modules";
+import { IGist, IFile } from './modules';
 
-import Configuration from "./configuration";
+import Configuration from './configuration';
 
-import GistFileSystemProvider from "./filesystemProvider";
+import GistFileSystemProvider from './filesystemProvider';
 
-import ShortCut from "./shortcut";
+import ShortCut from './shortcut';
 
-import HistoryViewProvider from "./historyProvider";
-import ContentProvider from "./contentProvider";
+import HistoryViewProvider from './historyProvider';
+import ContentProvider from './contentProvider';
 
-import { UserTreeItem, GistTreeItem, FileTreeItem, GistTreeProvider, SubscriptionTreeProvider } from "./treeProviders";
+import { UserTreeItem, GistTreeItem, FileTreeItem, GistTreeProvider, SubscriptionTreeProvider } from './treeProviders';
 
-import { GistSearch, SubscriptionSearch } from "./search";
+import { GistSearch, SubscriptionSearch } from './search';
 
 @Extension
 export class GitHubGistExplorer extends Subscriber {
-  @FileSystemProvider("gistfs", { isCaseSensitive: process.platform === "linux" })
+  @FileSystemProvider('gistfs', { isCaseSensitive: process.platform === 'linux' })
   public readonly gistFileSystem: GistFileSystemProvider = new GistFileSystemProvider();
 
-  @WebviewPanel("GistHistory")
+  @WebviewPanel('GistHistory')
   public readonly historyView: HistoryViewProvider = new HistoryViewProvider();
 
-  @TextDocumentContentProvider("GistFile")
+  @TextDocumentContentProvider('GistFile')
   public readonly fileContentProvider: ContentProvider = new ContentProvider();
 
-  @TextDocumentContentProvider("GistReport")
+  @TextDocumentContentProvider('GistReport')
   public readonly reportContentProvider: ContentProvider = new ContentProvider();
 
-  @TreeDataProvider("GistTree")
-  @Command("GitHubGistExplorer.GistTree.sortByLabel", "sortByLabel")
-  @Command("GitHubGistExplorer.GistTree.sortByLastUpdated", "sortByLastUpdated")
-  @Command("GitHubGistExplorer.GistTree.sortByCreated", "sortByCreated")
-  @Command("GitHubGistExplorer.GistTree.ascending", "ascending")
-  @Command("GitHubGistExplorer.GistTree.descending", "descending")
+  @TreeDataProvider('GistTree')
+  @Command('GitHubGistExplorer.GistTree.sortByLabel', 'sortByLabel')
+  @Command('GitHubGistExplorer.GistTree.sortByLastUpdated', 'sortByLastUpdated')
+  @Command('GitHubGistExplorer.GistTree.sortByCreated', 'sortByCreated')
+  @Command('GitHubGistExplorer.GistTree.ascending', 'ascending')
+  @Command('GitHubGistExplorer.GistTree.descending', 'descending')
   public readonly gistTree: GistTreeProvider = new GistTreeProvider();
 
-  @TreeDataProvider("SubscriptionTree")
-  @Command("GitHubGistExplorer.subscribeGist", "subscribe")
-  @Command("GitHubGistExplorer.unsubscribeGist", "unsubscribe")
-  @Command("GitHubGistExplorer.SubscriptionTree.sortByLabel", "sortByLabel")
-  @Command("GitHubGistExplorer.SubscriptionTree.sortByLastUpdated", "sortByLastUpdated")
-  @Command("GitHubGistExplorer.SubscriptionTree.sortByCreated", "sortByCreated")
-  @Command("GitHubGistExplorer.SubscriptionTree.ascending", "ascending")
-  @Command("GitHubGistExplorer.SubscriptionTree.descending", "descending")
+  @TreeDataProvider('SubscriptionTree')
+  @Command('GitHubGistExplorer.subscribeGist', 'subscribe')
+  @Command('GitHubGistExplorer.unsubscribeGist', 'unsubscribe')
+  @Command('GitHubGistExplorer.SubscriptionTree.sortByLabel', 'sortByLabel')
+  @Command('GitHubGistExplorer.SubscriptionTree.sortByLastUpdated', 'sortByLastUpdated')
+  @Command('GitHubGistExplorer.SubscriptionTree.sortByCreated', 'sortByCreated')
+  @Command('GitHubGistExplorer.SubscriptionTree.ascending', 'ascending')
+  @Command('GitHubGistExplorer.SubscriptionTree.descending', 'descending')
   public readonly subscriptionTree: SubscriptionTreeProvider = new SubscriptionTreeProvider();
 
-  @Command("GitHubGistExplorer.shortcut.saveIt", "saveIt")
-  @Command("GitHubGistExplorer.shortcut.clipIt", "clipIt")
-  @Command("GitHubGistExplorer.shortcut.pasteIt", "pasteIt")
-  @Command("GitHubGistExplorer.shortcut.importFolder", "importFolder")
+  @Command('GitHubGistExplorer.shortcut.saveIt', 'saveIt')
+  @Command('GitHubGistExplorer.shortcut.clipIt', 'clipIt')
+  @Command('GitHubGistExplorer.shortcut.pasteIt', 'pasteIt')
+  @Command('GitHubGistExplorer.shortcut.importFolder', 'importFolder')
   public readonly shortcut: ShortCut = new ShortCut(this.gistTree);
 
-  @Command("GitHubGistExplorer.shortcut.gistSearch", "show")
+  @Command('GitHubGistExplorer.shortcut.gistSearch', 'show')
+  @Command('GitHubGistExplorer.GistTree.search', 'show')
   public readonly gistSearch: GistSearch = new GistSearch(this.gistTree);
 
-  @Command("GitHubGistExplorer.shortcut.subscriptionSearch", "show")
+  @Command('GitHubGistExplorer.shortcut.subscriptionSearch', 'show')
+  @Command('GitHubGistExplorer.SubscriptionTree.search', 'show')
   public readonly subscriptionSearch: SubscriptionSearch = new SubscriptionSearch(this.subscriptionTree);
 
   constructor(context: ExtensionContext) {
@@ -81,10 +83,10 @@ export class GitHubGistExplorer extends Subscriber {
     this.register(this.gistFileSystem.onDidChangeFile, this.gistFileSystem, this.didChangeFileHandle);
   }
 
-  @Command("GitHubGistExplorer.GistTree.refresh")
-  @Command("GitHubGistExplorer.SubscriptionTree.refresh")
+  @Command('GitHubGistExplorer.GistTree.refresh')
+  @Command('GitHubGistExplorer.SubscriptionTree.refresh')
   refresh(commandId: string) {
-    if (commandId === "GitHubGistExplorer.SubscriptionTree.refresh") {
+    if (commandId === 'GitHubGistExplorer.SubscriptionTree.refresh') {
       this.subscriptionTree.refresh();
     } else {
       const home: string = GistFileSystemProvider.homeDirectory();
@@ -94,25 +96,25 @@ export class GitHubGistExplorer extends Subscriber {
     }
   }
 
-  @Command("GitHubGistExplorer.viewUser")
+  @Command('GitHubGistExplorer.viewUser')
   viewUser(commandId: string, node: UserTreeItem) {
-    VSCode.executeCommand("vscode.open", Uri.parse(node.metadata.htmlURL));
+    VSCode.execute('vscode.open', Uri.parse(node.metadata.htmlURL));
   }
 
-  @Command("GitHubGistExplorer.addGist")
-  @Command("GitHubGistExplorer.shortcut.newGist")
+  @Command('GitHubGistExplorer.addGist')
+  @Command('GitHubGistExplorer.shortcut.newGist')
   addGist() {
     const options = {
-      prompt: i18n("explorer.add_gist_description")
+      prompt: i18n('explorer.add_gist_description')
     };
     VSCode.showInputBox(options)
       .then(description => {
-        const pub: string = i18n("explorer.public");
-        const sec: string = i18n("explorer.secret");
+        const pub: string = i18n('explorer.public');
+        const sec: string = i18n('explorer.secret');
 
         return VSCode.showQuickPick(
             [ pub, sec ],
-            { placeHolder: i18n("explorer.add_gist_type")}
+            { placeHolder: i18n('explorer.add_gist_type')}
           )
           .then(selected => {
             if (selected) {
@@ -125,7 +127,7 @@ export class GitHubGistExplorer extends Subscriber {
       })
       .then(({ type, description }) => {
         if (type === undefined) {
-          VSCode.message("error.gist_type_required").showWarningMessage();
+          VSCode.message('error.gist_type_required').warn();
           return Promise.resolve(undefined);
         }
         return api.addWaitable(type, description);
@@ -136,17 +138,17 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.editGist")
+  @Command('GitHubGistExplorer.editGist')
   editGist(commandId: string, node: GistTreeItem) {
     const gist: IGist = node.metadata;
 
     const options = {
       value: gist.label,
-      prompt: i18n("explorer.edit_gist_description")
+      prompt: i18n('explorer.edit_gist_description')
     };
     VSCode.showInputBox(options)
       .then(value => {
@@ -158,15 +160,15 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.deleteGist")
+  @Command('GitHubGistExplorer.deleteGist')
   deleteGist(commandId: string, node: GistTreeItem) {
     const gist: IGist = node.metadata;
 
-    VSCode.message("explorer.deleting_gist_confirmation", gist.label).showWarningMessage({ modal: true }, i18n("explorer.ok"))
+    VSCode.message('explorer.deleting_gist_confirmation', gist.label).warn({ modal: true }, i18n('explorer.ok'))
       .then(reply => {
         if (reply) {
           return api.destroyWaitable(gist.id)
@@ -179,11 +181,11 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.starGist")
+  @Command('GitHubGistExplorer.starGist')
   starGist(commandId: string, node: GistTreeItem) {
     const gist: IGist = node.metadata;
     api.starWaitable(gist.id)
@@ -191,11 +193,11 @@ export class GitHubGistExplorer extends Subscriber {
         this.gistTree.refresh();
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.unstarGist")
+  @Command('GitHubGistExplorer.unstarGist')
   unstarGist(commandId: string, node: GistTreeItem) {
     const gist: IGist = node.metadata;
     api.unstarWaitable(gist.id)
@@ -203,21 +205,112 @@ export class GitHubGistExplorer extends Subscriber {
         this.gistTree.refresh();
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.history")
+  @Command('GitHubGistExplorer.sync')
+  @Command('GitHubGistExplorer.shortcut.sync')
+  sync(commandId: string, node: GistTreeItem | FileTreeItem | Uri | undefined) {
+    const now = new Date().toLocaleString();
+
+    if (node === undefined) {
+      const tasks = this.gistTree.items.map(v => this.syncGist(v));
+      loading('explorer.synchronizing', () => Promise.all(tasks))
+        .then(() => {
+          const msg = `${now}: ${i18n('explorer.sync_succed', 'ALL')}`;
+          VSCode.info(msg);
+        })
+        .catch(error => {
+          const msg = `${now}: ${i18n('explorer.sync_failed', 'ALL')}`;
+          VSCode.error(msg);
+        });
+    } else if (node instanceof GistTreeItem) {
+      const gist: IGist = node.metadata;
+      loading('explorer.synchronizing', () => this.syncGist(gist))
+        .then(() => {
+          const msg = `${now}: ${i18n('explorer.sync_succed', gist.label)}`;
+          VSCode.info(msg);
+        }).catch(error => {
+          console.log(error);
+          const msg = `${now}: ${i18n('explorer.sync_failed', gist.label)}`;
+          VSCode.error(msg);
+        });
+    } else if (node instanceof FileTreeItem) {
+      const file: IFile = node.metadata;
+      loading('explorer.synchronizing', () => this.syncFile(file))
+        .then(() => {
+          const msg = `${now}: ${i18n('explorer.sync_succed', file.filename)}`;
+          VSCode.info(msg);
+        }).catch(error => {
+          const msg = `${now}: ${i18n('explorer.sync_failed', file.filename)}`;
+          VSCode.error(msg);
+        });
+    } else if (node instanceof Uri) {
+      if (node.scheme === 'gistfs') {
+        const [ gistID, filename ] = node.path.substring(1).split('/');
+        if (gistID && filename) {
+          const file: IFile = {
+            gistID,
+            filename,
+            type: '',
+            language: '',
+            rawURL: node.query,
+            size: 0
+          };
+          loading('explorer.synchronizing', () => this.syncFile(file))
+            .then(() => {
+              const msg = `${now}: ${i18n('explorer.sync_succed', file.filename)}`;
+              VSCode.info(msg);
+            }).catch(error => {
+              const msg = `${now}: ${i18n('explorer.sync_failed', file.filename)}`;
+              VSCode.error(msg);
+            });
+        }
+      }
+    }
+  }
+
+  syncGist(gist: IGist) {
+    const files = gist.files.reduce((pv, cv) => {
+      const fileUri = GistFileSystemProvider.parseFile(cv);
+
+      const path = GistFileSystemProvider.fullPath(fileUri);
+
+      const exists = filesystem.existsSync(path);
+      if (exists) {
+        const content = filesystem.readFileSync(path);
+        pv.push({
+          filename: cv.filename,
+          content
+        })
+      }
+      return pv;
+    }, []);
+
+    return api.update(gist.id, gist.label, files);
+  }
+
+  syncFile(file: IFile) {
+    const fileUri = GistFileSystemProvider.parseFile(file);
+
+    const path = GistFileSystemProvider.fullPath(fileUri);
+    return filesystem.readfile(path).then(content => {
+      api.updateFile(file.gistID, file.filename, content);
+    });
+  }
+
+  @Command('GitHubGistExplorer.history')
   history(commandId: string, node: GistTreeItem) {
     HistoryViewProvider.show(node.metadata);
   }
 
-  @Command("GitHubGistExplorer.exportGist")
+  @Command('GitHubGistExplorer.exportGist')
   exportGist(commandId: string, node: GistTreeItem) {
     const gist = node.metadata;
 
     const options = {
-      openLabel: i18n("explorer.export"),
+      openLabel: i18n('explorer.export'),
       canSelectFiles: false,
       canSelectFolders: true,
       canSelectMany: false
@@ -236,22 +329,22 @@ export class GitHubGistExplorer extends Subscriber {
               return filesystem.writefile(`${path}/${file.filename}`, content);
             })
             .then(() => {
-              return Promise.resolve(new Date().toLocaleString() + ": " + i18n("explorer.export_succeed", file.filename));
+              return Promise.resolve(new Date().toLocaleString() + ': ' + i18n('explorer.export_succeed', file.filename));
             })
             .catch(error => {
-              return Promise.resolve(new Date().toLocaleString() + ": " + i18n("explorer.export_failed", file.filename));
+              return Promise.resolve(new Date().toLocaleString() + ': ' + i18n('explorer.export_failed', file.filename));
             });
         });
         return Promise.resolve(tasks);
       })
       .then(tasks => {
         if (tasks.length === 0) {
-          VSCode.message("explorer.export_cancelled").showWarningMessage();
+          VSCode.message('explorer.export_cancelled').warn();
           return Promise.resolve(undefined);
         }
-        return loading("explorer.exporting_files", () => Promise.all(tasks))
+        return loading('explorer.exporting_files', () => Promise.all(tasks))
           .then(results => {
-            return VSCode.message("explorer.export_completed").showInformationMessage(i18n("explorer.view_report"))
+            return VSCode.message('explorer.export_completed').info(i18n('explorer.view_report'))
               .then(reply => reply ? results : undefined);
           });
       })
@@ -262,29 +355,29 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.paste")
+  @Command('GitHubGistExplorer.paste')
   paste(commandId: string, node: GistTreeItem) {
     clipboardy.read()
       .then(content => {
         if (content.trim().length === 0) {
-          VSCode.message("error.empty_clipboard").showInformationMessage();
+          VSCode.message('error.empty_clipboard').info();
         } else {
           this.createFile(node, content);
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.addFile")
+  @Command('GitHubGistExplorer.addFile')
   addFile(commandId: string, node: GistTreeItem) {
-    const importFile = i18n("explorer.import_file");
-    const newFile = i18n("explorer.new_file");
+    const importFile = i18n('explorer.import_file');
+    const newFile = i18n('explorer.new_file');
 
     VSCode.showQuickPick([ importFile, newFile ])
       .then(selected => {
@@ -296,22 +389,22 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
   createFile(node: GistTreeItem, content?: string) {
     const options = {
-      prompt: i18n("explorer.add_file_name")
+      prompt: i18n('explorer.add_file_name')
     };
     return VSCode.showInputBox(options)
       .then(filename => {
         if (!filename) {
-          VSCode.message("error.file_name_required").showWarningMessage();
+          VSCode.message('error.file_name_required').warn();
           return;
         }
 
-        return api.updateFileWaitable(node.metadata.id, filename, content || i18n("explorer.empty_file"))
+        return api.updateFileWaitable(node.metadata.id, filename, content || i18n('explorer.empty_file'))
           .then(() => {
             this.gistTree.refresh();
           });
@@ -320,7 +413,7 @@ export class GitHubGistExplorer extends Subscriber {
 
   importFile(node: GistTreeItem) {
     const options = {
-      openLabel: i18n("explorer.import"),
+      openLabel: i18n('explorer.import'),
       canSelectFiles: true,
       canSelectFolders: false,
       canSelectMany: true
@@ -339,11 +432,11 @@ export class GitHubGistExplorer extends Subscriber {
         return Promise.resolve(tasks);
       }).then(tasks => {
         if (tasks.length === 0) {
-          VSCode.message("explorer.import_cancelled").showWarningMessage();
+          VSCode.message('explorer.import_cancelled').warn();
           return Promise.resolve(undefined);
         }
 
-        return loading<IGist>("explorer.importing_files", () => {
+        return loading<IGist>('explorer.importing_files', () => {
             return Promise.all(tasks)
               .then(files => {
                 return api.update(node.metadata.id, undefined, files);
@@ -357,7 +450,7 @@ export class GitHubGistExplorer extends Subscriber {
       });
   }
 
-  @Command("GitHubGistExplorer.editFile")
+  @Command('GitHubGistExplorer.editFile')
   editFile(commandId: string, node: FileTreeItem) {
     const file: IFile = node.metadata;
     const fileUri = GistFileSystemProvider.parseFile(file);
@@ -383,11 +476,11 @@ export class GitHubGistExplorer extends Subscriber {
         VSCode.showTextDocument(doc, { preview: true });
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.viewFile")
+  @Command('GitHubGistExplorer.viewFile')
   viewFile(command: string, node: FileTreeItem) {
     const file: IFile = node.metadata;
 
@@ -395,11 +488,11 @@ export class GitHubGistExplorer extends Subscriber {
     VSCode.showTextDocument(uri, { preview: true });
   }
 
-  @Command("GitHubGistExplorer.deleteFile")
+  @Command('GitHubGistExplorer.deleteFile')
   deleteFile(commandId: string, node: FileTreeItem) {
     const file: IFile = node.metadata;
 
-    VSCode.message("explorer.deleting_file_confirmation", file.filename).showWarningMessage({ modal: true }, i18n("explorer.ok"))
+    VSCode.message('explorer.deleting_file_confirmation', file.filename).warn({ modal: true }, i18n('explorer.ok'))
       .then(reply => {
         if (reply) {
           return api.deleteFileWaitable(file.gistID, file.filename)
@@ -413,17 +506,17 @@ export class GitHubGistExplorer extends Subscriber {
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.renameFile")
+  @Command('GitHubGistExplorer.renameFile')
   renameFile(commandId: string, node: FileTreeItem) {
     const file: IFile = node.metadata;
 
     const options = {
       value: file.filename,
-      prompt: i18n("explorer.rename_file_name")
+      prompt: i18n('explorer.rename_file_name')
     };
     VSCode.showInputBox(options)
       .then(value => {
@@ -432,7 +525,7 @@ export class GitHubGistExplorer extends Subscriber {
         }
 
         if (value.length === 0) {
-          VSCode.message("error.file_name_required").showWarningMessage();
+          VSCode.message('error.file_name_required').warn();
           return;
         }
 
@@ -446,11 +539,11 @@ export class GitHubGistExplorer extends Subscriber {
           });
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Command("GitHubGistExplorer.reloadFile")
+  @Command('GitHubGistExplorer.reloadFile')
   reloadFile(commandId: string, node: FileTreeItem) {
     const file: IFile = node.metadata;
 
@@ -461,15 +554,15 @@ export class GitHubGistExplorer extends Subscriber {
         this.gistFileSystem.readFile(uri);
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
-  @Event("onDidChangeConfiguration")
+  @Event('onDidChangeConfiguration')
   didChangeConfigurationHandle(eventId: string, event: ConfigurationChangeEvent) {
     const changes = Configuration.affects(event);
     if (changes.length > 0) {
-      if (changes.includes("GithubGistExplorer.explorer.subscriptions")) {
+      if (changes.includes('GithubGistExplorer.explorer.subscriptions')) {
         this.subscriptionTree.refresh();
       } else {
         const home: string = GistFileSystemProvider.homeDirectory();
@@ -481,20 +574,22 @@ export class GitHubGistExplorer extends Subscriber {
   }
 
   didChangeFileHandle(events: FileChangeEvent[]) {
-    events.forEach(e => {
-      if (e.type === FileChangeType.Changed) {
-        if (e.uri.scheme === "gistfs") {
-          const [ gistID, filename ] = e.uri.path.substring(1).split("/");
-          if (gistID && filename) {
-            const path = GistFileSystemProvider.fullPath(e.uri);
-            filesystem.readfile(path)
-              .then(content => {
-                api.updateFileWaitable(gistID, filename, content);
-              });
+    if (Configuration.explorer.uploadOnSave) {
+      events.forEach(e => {
+        if (e.type === FileChangeType.Changed) {
+          if (e.uri.scheme === 'gistfs') {
+            const [ gistID, filename ] = e.uri.path.substring(1).split('/');
+            if (gistID && filename) {
+              const path = GistFileSystemProvider.fullPath(e.uri);
+              filesystem.readfile(path)
+                .then(content => {
+                  api.updateFileWaitable(gistID, filename, content);
+                });
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 }
 
@@ -504,8 +599,8 @@ export function activate(context: ExtensionContext) {
   const gistAscending: boolean = Configuration.explorer.gistAscending;
   const subscriptionAscending: boolean = Configuration.explorer.subscriptionAscending;
   Promise.all([
-    VSCode.executeCommand("setContext", "GistAscending", gistAscending),
-    VSCode.executeCommand("setContext", "SubscriptionAscending", subscriptionAscending)
+    VSCode.execute('setContext', 'GistAscending', gistAscending),
+    VSCode.execute('setContext', 'SubscriptionAscending', subscriptionAscending)
   ])
   .then(() => {
     const gistSortBy: string = Configuration.explorer.gistSortBy;
@@ -520,6 +615,6 @@ export function activate(context: ExtensionContext) {
     ]);
   })
   .finally(() => {
-    VSCode.executeCommand("setContext", "ExtensionLoaded", true);
+    VSCode.execute('setContext', 'ExtensionLoaded', true);
   });
 }

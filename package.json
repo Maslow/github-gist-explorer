@@ -2,7 +2,7 @@
   "name": "github-gist-explorer",
   "displayName": "GitHub Gist Explorer",
   "description": "Management your GitHub gists with Visual Studio Code",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "icon": "media/static/img/icon.png",
   "publisher": "k9982874",
   "author": {
@@ -33,6 +33,7 @@
     "onCommand:GitHubGistExplorer.shortcut.importFolder",
     "onCommand:GitHubGistExplorer.shortcut.gistSearch",
     "onCommand:GitHubGistExplorer.shortcut.subscriptionSearch",
+    "onCommand:GitHubGistExplorer.shortcut.sync",
     "onWebviewPanel:GistHistory",
     "onView:GistFile",
     "onView:GistReport",
@@ -85,15 +86,19 @@
       },
       {
         "command": "GitHubGistExplorer.shortcut.gistSearch",
-        "title": "%extension.shortcut.gist_search%",
-        "icon": {
-          "light": "resources/light/search.svg",
-          "dark": "resources/dark/search.svg"
-        }
+        "title": "%extension.shortcut.gist_search%"
       },
       {
         "command": "GitHubGistExplorer.shortcut.subscriptionSearch",
-        "title": "%extension.shortcut.subscription_search%",
+        "title": "%extension.shortcut.subscription_search%"
+      },
+      {
+        "command": "GitHubGistExplorer.shortcut.sync",
+        "title": "%extension.shortcut.sync%"
+      },
+      {
+        "command": "GitHubGistExplorer.GistTree.search",
+        "title": "%extension.command.search%",
         "icon": {
           "light": "resources/light/search.svg",
           "dark": "resources/dark/search.svg"
@@ -134,6 +139,14 @@
       {
         "command": "GitHubGistExplorer.GistTree.sortByCreated",
         "title": "%extension.command.sort_by_created%"
+      },
+      {
+        "command": "GitHubGistExplorer.SubscriptionTree.search",
+        "title": "%extension.command.search%",
+        "icon": {
+          "light": "resources/light/search.svg",
+          "dark": "resources/dark/search.svg"
+        }
       },
       {
         "command": "GitHubGistExplorer.SubscriptionTree.refresh",
@@ -208,6 +221,10 @@
         "title": "%extension.command.unstar_gist%"
       },
       {
+        "command": "GitHubGistExplorer.sync",
+        "title": "%extension.command.sync%"
+      },
+      {
         "command": "GitHubGistExplorer.history",
         "title": "%extension.command.history%"
       },
@@ -279,6 +296,14 @@
           "when": "ExtensionLoaded"
         },
         {
+          "command": "GitHubGistExplorer.shortcut.sync",
+          "when": "ExtensionLoaded"
+        },
+        {
+          "command": "GitHubGistExplorer.GistTree.search",
+          "when": "false"
+        },
+        {
           "command": "GitHubGistExplorer.GistTree.refresh",
           "when": "false"
         },
@@ -300,6 +325,10 @@
         },
         {
           "command": "GitHubGistExplorer.GistTree.sortByCreated",
+          "when": "false"
+        },
+        {
+          "command": "GitHubGistExplorer.SubscriptionTree.search",
           "when": "false"
         },
         {
@@ -363,6 +392,10 @@
           "when": "false"
         },
         {
+          "command": "GitHubGistExplorer.sync",
+          "when": "false"
+        },
+        {
           "command": "GitHubGistExplorer.history",
           "when": "false"
         },
@@ -395,10 +428,15 @@
           "when": "false"
         }
       ],
-      "editor/title": [],
+      "editor/title": [
+        {
+          "command": "GitHubGistExplorer.sync",
+          "when": "resourceScheme == gistfs"
+        }
+      ],
       "view/title": [
         {
-          "command": "GitHubGistExplorer.shortcut.gistSearch",
+          "command": "GitHubGistExplorer.GistTree.search",
           "when": "ExtensionLoaded && view == GistTree",
           "group": "navigation@1"
         },
@@ -433,7 +471,7 @@
           "group": "NavigationMenuGroup1@3"
         },
         {
-          "command": "GitHubGistExplorer.shortcut.subscriptionSearch",
+          "command": "GitHubGistExplorer.SubscriptionTree.search",
           "when": "ExtensionLoaded && view == SubscriptionTree",
           "group": "navigation@1"
         },
@@ -515,19 +553,24 @@
           "group": "GistMenuGroup4@1"
         },
         {
-          "command": "GitHubGistExplorer.history",
+          "command": "GitHubGistExplorer.sync",
           "when": "view == GistTree && viewItem =~ /^Gist/",
           "group": "GistMenuGroup5@1"
         },
         {
+          "command": "GitHubGistExplorer.history",
+          "when": "view == GistTree && viewItem =~ /^Gist/",
+          "group": "GistMenuGroup6@1"
+        },
+        {
           "command": "GitHubGistExplorer.viewUser",
           "when": "view == SubscriptionTree && viewItem =~ /^User/",
-          "group": "GistMenuGroup6@1"
+          "group": "GistMenuGroup7@1"
         },
         {
           "command": "GitHubGistExplorer.unsubscribeGist",
           "when": "view == SubscriptionTree && viewItem =~ /^User/",
-          "group": "GistMenuGroup6@2"
+          "group": "GistMenuGroup7@2"
         },
         {
           "command": "GitHubGistExplorer.editFile",
@@ -548,6 +591,11 @@
           "command": "GitHubGistExplorer.reloadFile",
           "when": "view == GistTree && viewItem == File",
           "group": "FileMenuGroup2@1"
+        },
+        {
+          "command": "GitHubGistExplorer.sync",
+          "when": "view == GistTree && viewItem == File",
+          "group": "FileMenuGroup3@1"
         }
       ]
     },
@@ -555,6 +603,10 @@
       {
         "title": "GitHub Gist Explorer",
         "properties": {
+          "GithubGistExplorer.github.address": {
+            "type": "string",
+            "default": "https://api.github.com"
+          },
           "GithubGistExplorer.github.username": {
             "type": "string",
             "default": ""
@@ -571,6 +623,10 @@
               "Last Updated",
               "Created"
             ]
+          },
+          "GithubGistExplorer.explorer.uploadOnSave": {
+            "type": "boolean",
+            "default": true
           },
           "GithubGistExplorer.explorer.gistAscending": {
             "type": "boolean",

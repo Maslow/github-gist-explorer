@@ -1,13 +1,13 @@
-import * as path from "path";
+import * as path from 'path';
 
-import { Command, TreeItem, TreeItemCollapsibleState, Uri } from "vscode";
+import { Command, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 
-import { IUser, IGist, IFile } from "../modules";
+import { IUser, IGist, IFile } from '../modules';
 
 export enum TreeSortBy {
-  Label = "Label",
-  LastUpdated = "Last Updated",
-  Created = "Created",
+  Label = 'Label',
+  LastUpdated = 'Last Updated',
+  Created = 'Created',
 }
 
 export interface ITreeProvider<T> {
@@ -29,7 +29,7 @@ export class UserTreeItem extends TreeItem {
   constructor(readonly metadata: IUser) {
     super(metadata.login, TreeItemCollapsibleState.Collapsed);
 
-    this.contextValue = "User";
+    this.contextValue = 'User';
 
     this.id = metadata.id;
     this.description = metadata.profile.name;
@@ -38,8 +38,8 @@ export class UserTreeItem extends TreeItem {
       this.iconPath = Uri.parse(metadata.avatarURL);
     } else {
       this.iconPath = {
-        light: path.join(__filename, process.env.ASSET_PATH, "light/user.svg"),
-        dark: path.join(__filename, process.env.ASSET_PATH, "dark/user.svg")
+        light: path.join(__filename, process.env.ASSET_PATH, 'light/user.svg'),
+        dark: path.join(__filename, process.env.ASSET_PATH, 'dark/user.svg')
       };
     }
   }
@@ -53,19 +53,19 @@ export class GistTreeItem extends TreeItem {
     super(metadata.label, TreeItemCollapsibleState.Collapsed);
 
     if (starred) {
-      this.contextValue = "GistStarrd";
+      this.contextValue = 'GistStarrd';
 
       this.iconPath = {
-        light: path.join(__filename, process.env.ASSET_PATH, "light/star.svg"),
-        dark: path.join(__filename, process.env.ASSET_PATH, "dark/star.svg")
+        light: path.join(__filename, process.env.ASSET_PATH, 'light/star.svg'),
+        dark: path.join(__filename, process.env.ASSET_PATH, 'dark/star.svg')
       };
     } else {
-      this.contextValue = "Gist";
+      this.contextValue = 'Gist';
 
       if (!metadata.public) {
         this.iconPath = {
-          light: path.join(__filename, process.env.ASSET_PATH, "light/folder-lock.svg"),
-          dark: path.join(__filename, process.env.ASSET_PATH, "dark/folder-lock.svg")
+          light: path.join(__filename, process.env.ASSET_PATH, 'light/folder-lock.svg'),
+          dark: path.join(__filename, process.env.ASSET_PATH, 'dark/folder-lock.svg')
         };
       }
     }
@@ -80,8 +80,8 @@ export class GistTreeItem extends TreeItem {
   }
 
   iconPath = {
-    light: path.join(__filename, process.env.ASSET_PATH, "light/folder.svg"),
-    dark: path.join(__filename, process.env.ASSET_PATH, "dark/folder.svg")
+    light: path.join(__filename, process.env.ASSET_PATH, 'light/folder.svg'),
+    dark: path.join(__filename, process.env.ASSET_PATH, 'dark/folder.svg')
   };
 }
 
@@ -89,14 +89,14 @@ export class FileTreeItem extends TreeItem {
   constructor(public readonly metadata: IFile, command?: Command) {
     super(metadata.filename, TreeItemCollapsibleState.None);
 
-    this.contextValue = "File";
+    this.contextValue = 'File';
 
     if (command) {
       this.command = command;
     } else {
       this.command = {
-        command: "GitHubGistExplorer.editFile",
-        title: "Edit File"
+        command: 'GitHubGistExplorer.editFile',
+        title: 'Edit File'
       };
     }
     this.command.arguments = [this];
@@ -111,26 +111,26 @@ export class FileTreeItem extends TreeItem {
   }
 
   iconPath = {
-    light: path.join(__filename, process.env.ASSET_PATH, "light/snippet.svg"),
-    dark: path.join(__filename, process.env.ASSET_PATH, "dark/snippet.svg")
+    light: path.join(__filename, process.env.ASSET_PATH, 'light/snippet.svg'),
+    dark: path.join(__filename, process.env.ASSET_PATH, 'dark/snippet.svg')
   };
 }
 
 export function compareFn(sortBy: string, ascending: boolean) {
-  let key = "updatedAt";
+  let key = 'updatedAt';
   switch (sortBy) {
     case TreeSortBy.Label:
-      key = "label";
+      key = 'label';
       break;
     case TreeSortBy.Created:
-      key = "createdAt";
+      key = 'createdAt';
       break;
   }
 
   return function (a, b) {
     const [x, y] = ascending ? [a, b] : [b, a];
 
-    if (typeof x[key].diff === "function") {
+    if (typeof x[key].diff === 'function') {
       return x[key].diff(y[key]);
     }
 

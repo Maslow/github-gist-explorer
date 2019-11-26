@@ -1,12 +1,12 @@
-import i18n from "../i18n";
+import i18n from '../i18n';
 
-import { window, Disposable, QuickPickItem } from "vscode";
+import { window, Disposable, QuickPickItem } from 'vscode';
 
-import * as VSCode from "../vscode";
+import * as VSCode from '../vscode';
 
-import { ITreeProvider, Subscription } from "../treeProviders";
+import { ITreeProvider, Subscription } from '../treeProviders';
 
-import { IFile } from "../modules";
+import { IFile } from '../modules';
 
 export interface ISubscriptionSearchNode extends QuickPickItem {
   label: string;
@@ -40,7 +40,7 @@ export class SubscriptionSearch {
 
     const p = new Promise<ISubscriptionSearchNode | undefined>(resolve => {
       const input = window.createQuickPick<ISubscriptionSearchNode>();
-      input.placeholder = i18n("explorer.search");
+      input.placeholder = i18n('explorer.search');
       disposables.push(
         input.onDidChangeValue(value => {
           input.busy = true;
@@ -67,7 +67,7 @@ export class SubscriptionSearch {
 
     p.then(selected => {
       if (selected) {
-        VSCode.executeCommand("GitHubGistExplorer.viewFile", selected);
+        VSCode.execute('GitHubGistExplorer.viewFile', selected);
       }
     })
     .finally(() => {

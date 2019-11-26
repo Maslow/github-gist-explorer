@@ -1,11 +1,11 @@
-import { IFile } from "./interfaces";
+import { IFile } from './interfaces';
 
 export default class FileModule implements IFile {
-  gistID = "";
-  filename = "";
-  type = "";
-  language = "";
-  rawURL = "";
+  gistID = '';
+  filename = '';
+  type = '';
+  language = '';
+  rawURL = '';
   size = 0;
 
   content?: string;

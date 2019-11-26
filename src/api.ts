@@ -1,12 +1,12 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from 'axios';
 
-import waitify from "./waitify";
+import waitify from './waitify';
 
-import * as constans from "./constans";
+import * as constans from './constans';
 
-import { IGist, IUser, GistModule, UserModule } from "./modules";
+import { IGist, IUser, GistModule, UserModule } from './modules';
 
-import Configuration from "./configuration";
+import Configuration from './configuration';
 
 export interface INewFile {
   filename: string;
@@ -16,7 +16,7 @@ export interface INewFile {
 function createRequestConfig(): AxiosRequestConfig {
   const options: AxiosRequestConfig = {
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     }
   };
 
@@ -46,7 +46,7 @@ export function downloadFile(url: string): Promise<string> {
 
 export function retrieveUser(login: string): Promise<IUser> {
   const options: AxiosRequestConfig = createRequestConfig();
-  return axios.get(`${constans.GITHUB_API_URL}/users/${login}`, options)
+  return axios.get(`${Configuration.github.address}/users/${login}`, options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
@@ -60,7 +60,7 @@ export function list(username: string): Promise<IGist[]> {
   const options: AxiosRequestConfig = createRequestConfig();
 
   const p = function (page: number, results: IGist[]) {
-    return axios.get(`${constans.GITHUB_API_URL}/users/${username}/gists?page=${page}`, options)
+    return axios.get(`${Configuration.github.address}/users/${username}/gists?page=${page}`, options)
       .then(response => {
         if (response.status !== 200) {
           return Promise.resolve([]);
@@ -87,7 +87,7 @@ export function listStarred(): Promise<IGist[]> {
   const options: AxiosRequestConfig = createRequestConfig();
 
   const p = function (page: number, results: IGist[]) {
-    return axios.get(`${constans.GITHUB_API_URL}/gists/starred?page=${page}`, options)
+    return axios.get(`${Configuration.github.address}/gists/starred?page=${page}`, options)
       .then(response => {
         if (response.status !== 200) {
           return Promise.resolve([]);
@@ -135,7 +135,7 @@ export function add(type: string, description: string, files?: INewFile[]): Prom
     };
   }
 
-  return axios.post(`${constans.GITHUB_API_URL}/gists`, data, options)
+  return axios.post(`${Configuration.github.address}/gists`, data, options)
     .then(response => {
       if ((response.status !== 200) && (response.status !== 201)) {
         return Promise.reject(new Error(response.statusText));
@@ -148,7 +148,7 @@ export function add(type: string, description: string, files?: INewFile[]): Prom
 export function retrieve(gistID: string, version?: string): Promise<IGist> {
   const options: AxiosRequestConfig = createRequestConfig();
 
-  let url = `${constans.GITHUB_API_URL}/gists/${gistID}`;
+  let url = `${Configuration.github.address}/gists/${gistID}`;
   if (version) {
     url = url + `/${version}`;
   }
@@ -182,7 +182,7 @@ export function update(gistID: string, description: string, files?: INewFile[]):
     }, {});
   }
 
-  return axios.patch(`${constans.GITHUB_API_URL}/gists/${gistID}`, data, options)
+  return axios.patch(`${Configuration.github.address}/gists/${gistID}`, data, options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
@@ -195,7 +195,7 @@ export function update(gistID: string, description: string, files?: INewFile[]):
 export function destroy(gistID: string): Promise<void> {
   const options: AxiosRequestConfig = createRequestConfig();
 
-  return axios.delete(`${constans.GITHUB_API_URL}/gists/${gistID}`, options)
+  return axios.delete(`${Configuration.github.address}/gists/${gistID}`, options)
     .then(response => {
       if ((response.status !== 200) && (response.status !== 204)) {
         return Promise.reject(new Error(response.statusText));
@@ -208,7 +208,7 @@ export function destroy(gistID: string): Promise<void> {
 export function star(gistID: string): Promise<void> {
   const options: AxiosRequestConfig = createRequestConfig();
 
-  return axios.put(`${constans.GITHUB_API_URL}/gists/${gistID}/star`, undefined, options)
+  return axios.put(`${Configuration.github.address}/gists/${gistID}/star`, undefined, options)
     .then(response => {
       if ((response.status !== 200) && (response.status !== 204)) {
         return Promise.reject(new Error(response.statusText));
@@ -221,7 +221,7 @@ export function star(gistID: string): Promise<void> {
 export function unstar(gistID: string): Promise<void> {
   const options: AxiosRequestConfig = createRequestConfig();
 
-  return axios.delete(`${constans.GITHUB_API_URL}/gists/${gistID}/star`, options)
+  return axios.delete(`${Configuration.github.address}/gists/${gistID}/star`, options)
     .then(response => {
       if ((response.status !== 200) && (response.status !== 204)) {
         return Promise.reject(new Error(response.statusText));
@@ -245,7 +245,7 @@ export function deleteFile(gistID: string, filename: string): Promise<void> {
     gist_id: gistID
   };
 
-  return axios.patch(`${constans.GITHUB_API_URL}/gists/${gistID}`, data, options)
+  return axios.patch(`${Configuration.github.address}/gists/${gistID}`, data, options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
@@ -267,7 +267,7 @@ export function renameFile(gistID: string, filename: string, newFilename: string
     gist_id: gistID
   };
 
-  return axios.patch(`${constans.GITHUB_API_URL}/gists/${gistID}`, data, options)
+  return axios.patch(`${Configuration.github.address}/gists/${gistID}`, data, options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
@@ -280,7 +280,7 @@ export function renameFile(gistID: string, filename: string, newFilename: string
 export function retrieveComment(gistID: string): Promise<any[]> {
   const options: AxiosRequestConfig = createRequestConfig();
 
-  return axios.get(`${constans.GITHUB_API_URL}/gists/${gistID}/comments`, options)
+  return axios.get(`${Configuration.github.address}/gists/${gistID}/comments`, options)
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject(new Error(response.statusText));
@@ -290,17 +290,17 @@ export function retrieveComment(gistID: string): Promise<any[]> {
     });
 }
 
-export const downloadFileWaitable = waitify<string>("explorer.downloading_file", downloadFile);
-export const retrieveUserWaitable = waitify("explorer.retrieve_user", retrieveUser);
-export const listWaitable = waitify("explorer.listing_gist", list);
-export const listStarredWaitable = waitify("explorer.listing_starred_gist", listStarred);
-export const addWaitable = waitify("explorer.creating_gist", add);
-export const retrieveWaitable = waitify("explorer.retrieve_gist", retrieve);
-export const updateWaitable = waitify("explorer.updating_gist", update);
-export const destroyWaitable = waitify("explorer.deleting_gist", destroy);
-export const starWaitable = waitify("explorer.star_gist", star);
-export const unstarWaitable = waitify("explorer.unstar_gist", unstar);
-export const updateFileWaitable = waitify("explorer.updating_file", updateFile);
-export const deleteFileWaitable = waitify("explorer.deleting_file", deleteFile);
-export const renameFileWaitable = waitify("explorer.renaming_file", renameFile);
-export const retrieveCommentWaitable = waitify("explorer.retrieve_comment", retrieveComment);
+export const downloadFileWaitable = waitify<string>('explorer.downloading_file', downloadFile);
+export const retrieveUserWaitable = waitify('explorer.retrieve_user', retrieveUser);
+export const listWaitable = waitify('explorer.listing_gist', list);
+export const listStarredWaitable = waitify('explorer.listing_starred_gist', listStarred);
+export const addWaitable = waitify('explorer.creating_gist', add);
+export const retrieveWaitable = waitify('explorer.retrieve_gist', retrieve);
+export const updateWaitable = waitify('explorer.updating_gist', update);
+export const destroyWaitable = waitify('explorer.deleting_gist', destroy);
+export const starWaitable = waitify('explorer.star_gist', star);
+export const unstarWaitable = waitify('explorer.unstar_gist', unstar);
+export const updateFileWaitable = waitify('explorer.updating_file', updateFile);
+export const deleteFileWaitable = waitify('explorer.deleting_file', deleteFile);
+export const renameFileWaitable = waitify('explorer.renaming_file', renameFile);
+export const retrieveCommentWaitable = waitify('explorer.retrieve_comment', retrieveComment);

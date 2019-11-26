@@ -1,4 +1,4 @@
-export declare type PromiseFunction<T> = (...argArray: any[]) => void | T | Thenable<T>
+export declare type PromiseFunction<T> = (...argArray: any[]) => void | T | Thenable<T>;
 
 export default function promisify<T>(func: PromiseFunction<T>, thisArg?: any): (...argArray: any[]) => Promise<T> {
   return function<T>(...argArray: any[]): Promise<T> {

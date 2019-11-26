@@ -1,17 +1,17 @@
-import i18n from "./i18n";
+import i18n from './i18n';
 
-import { extensions, Disposable, Event, EventEmitter, FileChangeEvent, FileChangeType, FileStat, FileSystemError, FileSystemProvider, FileType, Uri } from "vscode";
+import { extensions, Disposable, Event, EventEmitter, FileChangeEvent, FileChangeType, FileStat, FileSystemError, FileSystemProvider, FileType, Uri } from 'vscode';
 
-import * as chokidar from "chokidar";
+import * as chokidar from 'chokidar';
 
-import * as filesystem from "./filesystem";
+import * as filesystem from './filesystem';
 
-import * as constans from "./constans";
+import * as constans from './constans';
 
-import promisify from "./promisify";
-import debounce from "./debounce";
+import promisify from './promisify';
+import debounce from './debounce';
 
-import Configuration from "./configuration";
+import Configuration from './configuration';
 
 export interface IGistFileSystemProvider extends FileSystemProvider {
   exists(uri: Uri): boolean | Thenable<boolean>;
@@ -61,7 +61,7 @@ export default class GistFileSystemProvider implements IGistFileSystemProvider {
     const func = debounce(() => {
       this.onDidChangeFileEmitter.fire([{ type: FileChangeType.Changed, uri }]);
     }, 1500, true);
-    watcher.on("change", func);
+    watcher.on('change', func);
 
     return { dispose: () => watcher.close() };
   }
@@ -118,12 +118,12 @@ export default class GistFileSystemProvider implements IGistFileSystemProvider {
       buf = content;
     } else {
       let data: string;
-      if (typeof content === "string") {
+      if (typeof content === 'string') {
         data = content;
-      } else if (typeof content === "object") {
-        data = ("toString" in content) ? content.toString() : JSON.stringify(content);
+      } else if (typeof content === 'object') {
+        data = ('toString' in content) ? content.toString() : JSON.stringify(content);
       } else {
-        const msg = i18n("error.unknown_file_format");
+        const msg = i18n('error.unknown_file_format');
         return Promise.reject(new Error(msg));
       }
 

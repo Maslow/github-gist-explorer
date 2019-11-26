@@ -56,6 +56,9 @@
     "unsubscribe_gist": "取消订阅",
     "unsubscribe_gist_confirmation": "确认取消订阅%s吗?",
     "view_file": "查看文件内容",
-    "view_report": "查看报告"
+    "view_report": "查看报告",
+    "sync_failed": "同步失败 - %s",
+    "sync_succed": "同步成功 - %s",
+    "synchronizing": "同步中..."
   }
 }

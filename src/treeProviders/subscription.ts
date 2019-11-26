@@ -1,16 +1,16 @@
-import i18n from "../i18n";
+import i18n from '../i18n';
 
-import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
+import { Event, EventEmitter, TreeDataProvider, TreeItem } from 'vscode';
 
-import * as api from "../api";
-import * as VSCode from "../vscode";
+import * as api from '../api';
+import * as VSCode from '../vscode';
 
-import Configuration from "../configuration";
+import Configuration from '../configuration';
 
-import { pending, loading } from "../waitify";
+import { pending, loading } from '../waitify';
 
-import { IGist, IUser } from "../modules";
-import { ITreeProvider, TreeSortBy, UserTreeItem, GistTreeItem, FileTreeItem, compareFn } from "./common";
+import { IGist, IUser } from '../modules';
+import { ITreeProvider, TreeSortBy, UserTreeItem, GistTreeItem, FileTreeItem, compareFn } from './common';
 
 type Node = UserTreeItem | GistTreeItem | FileTreeItem;
 
@@ -63,19 +63,19 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
   getChildren(element?: Node): Node[] | Promise<Node[]> {
     if (element) {
       switch (element.contextValue) {
-        case "User":
+        case 'User':
           const items = this.subscriptions.get(element.id).items;
           if (items instanceof Promise) {
-            return loading("explorer.listing_gist", () => items)
+            return loading('explorer.listing_gist', () => items)
               .then(result => result.map(v => new GistTreeItem(v)));
           } else {
             return items.map(v => new GistTreeItem(v));
           }
-        case "Gist":
+        case 'Gist':
           return (element as GistTreeItem).metadata.files.map(f => {
             const command = {
-              command: "GitHubGistExplorer.viewFile",
-              title: "View File"
+              command: 'GitHubGistExplorer.viewFile',
+              title: 'View File'
             };
             return new FileTreeItem(f, command);
           });
@@ -97,7 +97,7 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
     }
   }
 
-  @pending("explorer.retrieve_user")
+  @pending('explorer.retrieve_user')
   refresh(): Promise<void> {
     this.subscriptions.clear();
 
@@ -125,7 +125,7 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
       Configuration.explorer.subscriptionAscending = ascending;
     }
 
-    VSCode.executeCommand("setContext", "SubscriptionAscending", ascending);
+    VSCode.execute('setContext', 'SubscriptionAscending', ascending);
 
     const fn = compareFn(sortBy, ascending);
     for (const key of this.subscriptions.keys()) {
@@ -168,14 +168,14 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
 
   subscribe() {
     const options = {
-      prompt: i18n("explorer.subscribe_gist")
+      prompt: i18n('explorer.subscribe_gist')
     };
     return VSCode.showInputBox(options)
       .then(login => {
         if (login) {
-          const matchs = login.trim().replace(/^https:\/\/.*github.com\//, "").match(/^(.+)\/*/);
+          const matchs = login.trim().replace(/^https:\/\/.*github.com\//, '').match(/^(.+)\/*/);
           if (matchs.length === 0) {
-            VSCode.message("error.login_name_invalid").showWarningMessage();
+            VSCode.message('error.login_name_invalid').warn();
             return;
           }
 
@@ -188,12 +188,12 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
   unsubscribe(commandId: string, node: UserTreeItem) {
-    VSCode.message("explorer.unsubscribe_gist_confirmation", node.label).showWarningMessage({ modal: true }, i18n("explorer.ok"))
+    VSCode.message('explorer.unsubscribe_gist_confirmation', node.label).warn({ modal: true }, i18n('explorer.ok'))
       .then(reply => {
         if (reply) {
           const sub = Configuration.explorer.subscriptions;
@@ -203,7 +203,7 @@ export class SubscriptionTreeProvider implements ITreeProvider<Subscription>, Tr
         }
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 }

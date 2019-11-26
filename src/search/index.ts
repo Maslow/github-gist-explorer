@@ -1,2 +1,2 @@
-export * from "./gist";
-export * from "./subscription";
+export * from './gist';
+export * from './subscription';

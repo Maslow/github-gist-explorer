@@ -56,6 +56,9 @@
     "unsubscribe_gist": "Unsubscribe gist",
     "unsubscribe_gist_confirmation": "Are you sure to unsubscribe gist %s?",
     "view_file": "View file contents",
-    "view_report": "View report"
+    "view_report": "View report",
+    "sync_failed": "Sync failed - %s",
+    "sync_succed": "Sync succeed - %s",
+    "synchronizing": "synchronizing..."
   }
 }

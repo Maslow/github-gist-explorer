@@ -62,4 +62,4 @@ export default function (func: Procedure, wait: number, immediate?: boolean) {
   })();
 
   return debounced;
-};
+}

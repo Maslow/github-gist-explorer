@@ -1,45 +1,45 @@
-import i18n from "./i18n";
+import i18n from './i18n';
 
-import { window, workspace, Uri } from "vscode";
+import { window, workspace, Uri } from 'vscode';
 
-import * as path from "path";
+import * as path from 'path';
 
-import * as clipboardy from "clipboardy";
+import * as clipboardy from 'clipboardy';
 
-import * as filesystem from "./filesystem";
+import * as filesystem from './filesystem';
 
-import * as constans from "./constans";
-import * as api from "./api";
-import * as VSCode from "./vscode";
+import * as constans from './constans';
+import * as api from './api';
+import * as VSCode from './vscode';
 
-import { loading } from "./waitify";
+import { loading } from './waitify';
 
-import { ITreeProvider } from "./treeProviders";
+import { ITreeProvider } from './treeProviders';
 
-import { IGist, IFile } from "./modules";
+import { IGist, IFile } from './modules';
 
-import Configuration, { validate } from "./configuration";
+import Configuration, { validate } from './configuration';
 export default class ShortCut {
   constructor(public readonly treeProvider: ITreeProvider<IGist>) {
   }
 
   private async save(content: string, filename?: string): Promise<IGist> {
     const gist = await VSCode.showQuickPick<IGist>(
-      [ ...this.treeProvider.items, { id: "", label: "New Gist", alwaysShow: true } ],
-      { placeHolder: i18n("explorer.pick_gist")}
+      [ ...this.treeProvider.items, { id: '', label: 'New Gist', alwaysShow: true } ],
+      { placeHolder: i18n('explorer.pick_gist')}
     );
 
     if (gist === undefined) {
-      VSCode.message("error.gist_required").showWarningMessage();
+      VSCode.message('error.gist_required').warn();
       return;
     }
 
     filename = await VSCode.showInputBox({
-      value: filename ? path.basename(filename) : "",
-      prompt: i18n("explorer.add_file_name")
+      value: filename ? path.basename(filename) : '',
+      prompt: i18n('explorer.add_file_name')
     });
     if (filename === undefined) {
-      VSCode.message("error.file_name_required").showWarningMessage();
+      VSCode.message('error.file_name_required').warn();
       return;
     }
 
@@ -49,19 +49,19 @@ export default class ShortCut {
     }
 
     const description = await VSCode.showInputBox({
-      prompt: i18n("explorer.add_gist_description")
+      prompt: i18n('explorer.add_gist_description')
     });
 
-    const pub: string = i18n("explorer.public");
-    const sec: string = i18n("explorer.secret");
+    const pub: string = i18n('explorer.public');
+    const sec: string = i18n('explorer.secret');
 
     const selected = await VSCode.showQuickPick(
       [ pub, sec ],
-      { placeHolder: i18n("explorer.add_gist_type")}
+      { placeHolder: i18n('explorer.add_gist_type')}
     );
 
     if (!selected) {
-      VSCode.message("error.gist_type_required").showWarningMessage();
+      VSCode.message('error.gist_type_required').warn();
       return;
     }
 
@@ -73,13 +73,13 @@ export default class ShortCut {
   async saveIt() {
     const editor = window.activeTextEditor;
     if (!editor) {
-      VSCode.message("error.open_file").showWarningMessage();
+      VSCode.message('error.open_file').warn();
       return;
     }
 
     const content = editor.document.getText();
     if (content.trim().length === 0) {
-      VSCode.message("error.empty_file").showWarningMessage();
+      VSCode.message('error.empty_file').warn();
       return;
     }
 
@@ -89,7 +89,7 @@ export default class ShortCut {
         this.treeProvider.refresh();
       }
     } catch (error) {
-      VSCode.showErrorMessage(error.message);
+      VSCode.error(error.message);
     }
   }
 
@@ -97,13 +97,13 @@ export default class ShortCut {
   async clipIt() {
     const editor = window.activeTextEditor;
     if (!editor) {
-      VSCode.message("error.open_file").showWarningMessage();
+      VSCode.message('error.open_file').warn();
       return;
     }
 
     const content = editor.selection.isEmpty ? editor.document.getText() : editor.document.getText(editor.selection);
     if (content.trim().length === 0) {
-      VSCode.message("error.empty_selection").showWarningMessage();
+      VSCode.message('error.empty_selection').warn();
       return;
     }
 
@@ -113,7 +113,7 @@ export default class ShortCut {
         this.treeProvider.refresh();
       }
     } catch (error) {
-      VSCode.showErrorMessage(error.message);
+      VSCode.error(error.message);
     }
   }
 
@@ -121,7 +121,7 @@ export default class ShortCut {
   async pasteIt() {
     const content = await clipboardy.read();
     if (content.trim().length === 0) {
-      VSCode.message("error.empty_clipboard").showWarningMessage();
+      VSCode.message('error.empty_clipboard').warn();
       return;
     }
 
@@ -131,7 +131,7 @@ export default class ShortCut {
         this.treeProvider.refresh();
       }
     } catch (error) {
-      VSCode.showErrorMessage(error.message);
+      VSCode.error(error.message);
     }
   }
 
@@ -140,7 +140,7 @@ export default class ShortCut {
     try {
       const options = {
         defaultUri: undefined,
-        openLabel: i18n("explorer.import"),
+        openLabel: i18n('explorer.import'),
         canSelectFiles: false,
         canSelectFolders: true,
         canSelectMany: false
@@ -152,22 +152,22 @@ export default class ShortCut {
 
       const uris = await VSCode.showOpenDialog(options);
       if ((uris === undefined) || (uris.length === 0)) {
-        VSCode.message("explorer.import_cancelled").showWarningMessage();
+        VSCode.message('explorer.import_cancelled').warn();
         return;
       }
 
       const basePath = uris.shift().path;
 
-      const pub: string = i18n("explorer.public");
-      const sec: string = i18n("explorer.secret");
+      const pub: string = i18n('explorer.public');
+      const sec: string = i18n('explorer.secret');
 
       const selected = await VSCode.showQuickPick(
         [ pub, sec ],
-        { placeHolder: i18n("explorer.add_gist_type") }
+        { placeHolder: i18n('explorer.add_gist_type') }
       );
 
       if (selected === undefined) {
-        VSCode.message("error.gist_type_required").showWarningMessage();
+        VSCode.message('error.gist_type_required').warn();
         return;
       }
 
@@ -176,7 +176,7 @@ export default class ShortCut {
       const tasks = (await filesystem.walkdir(basePath, Configuration.import.excludes)).map(v => {
         return filesystem.readfile(v)
           .then(content => {
-            const filename = v.substring(basePath.length + 1).replace(/\//g, "_");
+            const filename = v.substring(basePath.length + 1).replace(/\//g, '_');
             return Promise.resolve({
               filename,
               content
@@ -185,11 +185,11 @@ export default class ShortCut {
       });
 
       if (tasks.length === 0) {
-        VSCode.message("explorer.import_cancelled").showWarningMessage();
+        VSCode.message('explorer.import_cancelled').warn();
         return;
       }
 
-      const gist = await loading<IGist>("explorer.importing_files", () => {
+      const gist = await loading<IGist>('explorer.importing_files', () => {
         return Promise.all(tasks)
           .then(files => {
             const name = path.basename(basePath);
@@ -201,7 +201,7 @@ export default class ShortCut {
         this.treeProvider.refresh();
       }
     } catch (error) {
-      VSCode.showErrorMessage(error.message);
+      VSCode.error(error.message);
     }
   }
 }

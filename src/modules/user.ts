@@ -1,8 +1,8 @@
-import { IUser, IUserProfile } from "./interfaces";
+import { IUser, IUserProfile } from './interfaces';
 
 export default class UserModule implements IUser {
-  id = "";
-  login = "";
+  id = '';
+  login = '';
   nodeID?: string;
   avatarURL?: string;
   gravatarID?: string;

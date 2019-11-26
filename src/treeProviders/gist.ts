@@ -1,14 +1,14 @@
-import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
+import { Event, EventEmitter, TreeDataProvider, TreeItem } from 'vscode';
 
-import * as api from "../api";
-import * as VSCode from "../vscode";
+import * as api from '../api';
+import * as VSCode from '../vscode';
 
-import Configuration, { validate } from "../configuration";
+import Configuration, { validate } from '../configuration';
 
-import { pending } from "../waitify";
+import { pending } from '../waitify';
 
-import { IGist } from "../modules";
-import { ITreeProvider, TreeSortBy, GistTreeItem, FileTreeItem, compareFn } from "./common";
+import { IGist } from '../modules';
+import { ITreeProvider, TreeSortBy, GistTreeItem, FileTreeItem, compareFn } from './common';
 
 type Node = GistTreeItem | FileTreeItem;
 
@@ -29,7 +29,7 @@ export class GistTreeProvider implements ITreeProvider<IGist>, TreeDataProvider<
 
   getChildren(element?: Node): Node[] {
     if (element) {
-      if (element.contextValue.startsWith("Gist")) {
+      if (element.contextValue.startsWith('Gist')) {
         return (element as GistTreeItem).metadata.files.map(f => new FileTreeItem(f));
       }
       return [];
@@ -42,7 +42,7 @@ export class GistTreeProvider implements ITreeProvider<IGist>, TreeDataProvider<
   }
 
   @validate
-  @pending("explorer.listing_gist")
+  @pending('explorer.listing_gist')
   refresh(): Promise<void> {
     this.starredItems = [];
     this.unstarredItems = [];
@@ -55,7 +55,7 @@ export class GistTreeProvider implements ITreeProvider<IGist>, TreeDataProvider<
         this.sort();
       })
       .catch(error => {
-        VSCode.showErrorMessage(error.message);
+        VSCode.error(error.message);
       });
   }
 
@@ -72,7 +72,7 @@ export class GistTreeProvider implements ITreeProvider<IGist>, TreeDataProvider<
       Configuration.explorer.gistAscending = ascending;
     }
 
-    VSCode.executeCommand("setContext", "GistAscending", ascending);
+    VSCode.execute('setContext', 'GistAscending', ascending);
 
     const fn = compareFn(sortBy, ascending);
 

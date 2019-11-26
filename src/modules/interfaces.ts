@@ -1,7 +1,7 @@
 export enum HistoryStatus {
-  Unknown = "UNKNOWN",
-  Loading = "LOADING",
-  Done = "DONE"
+  Unknown = 'UNKNOWN',
+  Loading = 'LOADING',
+  Done = 'DONE'
 }
 
 export interface IChangeStatus {

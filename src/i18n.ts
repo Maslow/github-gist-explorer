@@ -1,16 +1,16 @@
-import * as util from "util";
+import * as util from 'util';
 
-import i18next from "i18next";
+import i18next from 'i18next';
 
 const options = {
-  lng: "en-US",
-  debug: process.env.NODE_ENV === "development",
+  lng: 'en-US',
+  debug: process.env.NODE_ENV === 'development',
   resources: {
-    "en-US": {
-      translation: require("../resources/i18n/en-US.json")
+    'en-US': {
+      translation: require('../resources/i18n/en-US.json')
     },
-    "zh-CN": {
-      translation: require("../resources/i18n/zh-CN.json")
+    'zh-CN': {
+      translation: require('../resources/i18n/zh-CN.json')
     }
   }
 };
@@ -19,8 +19,8 @@ let translator = (key: string, ...args: any[]) => key;
 
 if (process.env.VSCODE_NLS_CONFIG) {
   const vscNlsConfig = JSON.parse(process.env.VSCODE_NLS_CONFIG);
-  if (vscNlsConfig.locale === "zh-cn") {
-    options.lng = "zh-CN";
+  if (vscNlsConfig.locale === 'zh-cn') {
+    options.lng = 'zh-CN';
   }
 }
 

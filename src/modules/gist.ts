@@ -1,12 +1,12 @@
-import { IGist, IFile, IUser, IHistory } from "./interfaces";
+import { IGist, IFile, IUser, IHistory } from './interfaces';
 
-import UserModule from "./user";
-import FileModule from "./file";
-import HistoryModule from "./history";
+import UserModule from './user';
+import FileModule from './file';
+import HistoryModule from './history';
 
 export default class GistModule implements IGist {
-  id = "";
-  label = "New Gist";
+  id = '';
+  label = 'New Gist';
   nodeID?: string;
   url?: string;
   forksURL?: string;
@@ -40,7 +40,7 @@ export default class GistModule implements IGist {
       this.public = data.public;
       this.createdAt = data.created_at;
       this.updatedAt = data.updated_at;
-      this.description = data.description || "";
+      this.description = data.description || '';
       this.comments = data.comments;
       this.user = new UserModule(data.user);
       this.commentsURL = data.comments_url;
@@ -54,18 +54,18 @@ export default class GistModule implements IGist {
         this.label = this.description;
 
         if (fileLen === 1) {
-          this.description = "1 file";
+          this.description = '1 file';
         } else if (fileLen > 0) {
           this.description = `${fileLen} files`;
         } else {
-          this.description = "Empty Gist";
+          this.description = 'Empty Gist';
         }
       } else if (fileLen === 1) {
         this.label = this.files[0].filename;
       } else if (fileLen > 0) {
         this.label = `${this.files[0].filename} and ${fileLen - 1} files`;
       } else {
-        this.label = "(Empty Gist)";
+        this.label = '(Empty Gist)';
       }
     }
   }

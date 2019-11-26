@@ -1,14 +1,14 @@
-import i18n from "./i18n";
+import i18n from './i18n';
 
-import { CancellationToken, FileSystemError } from "vscode";
+import { CancellationToken, FileSystemError } from 'vscode';
 
-import * as fs from "fs";
-import * as path from "path";
-import * as mkdirp from "mkdirp";
-import * as rimraf from "rimraf";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as mkdirp from 'mkdirp';
+import * as rimraf from 'rimraf';
 
-export { basename, dirname, extname, join, parse, resolve } from "path";
-export { existsSync, readFileSync, watch } from "fs";
+export { basename, dirname, extname, join, parse, resolve } from 'path';
+export { existsSync, readFileSync, watch } from 'fs';
 
 export declare type Stats = fs.Stats;
 
@@ -26,19 +26,19 @@ function handleResult<T>(resolve: (result: T) => void, reject: (error: Error) =>
 }
 
 function massageError(error: Error & { code?: string }): Error {
-  if (error.code === "ENOENT") {
+  if (error.code === 'ENOENT') {
     return FileSystemError.FileNotFound();
   }
 
-  if (error.code === "EISDIR") {
+  if (error.code === 'EISDIR') {
     return FileSystemError.FileIsADirectory();
   }
 
-  if (error.code === "EEXIST") {
+  if (error.code === 'EEXIST') {
     return FileSystemError.FileExists();
   }
 
-  if (error.code === "EPERM" || error.code === "EACCESS") {
+  if (error.code === 'EPERM' || error.code === 'EACCESS') {
     return FileSystemError.NoPermissions();
   }
 
@@ -47,7 +47,7 @@ function massageError(error: Error & { code?: string }): Error {
 
 export function checkCancellation(token: CancellationToken): void {
   if (token.isCancellationRequested) {
-    const msg = i18n("error.operation_cancelled");
+    const msg = i18n('error.operation_cancelled');
     throw new Error(msg);
   }
 }
@@ -55,15 +55,15 @@ export function checkCancellation(token: CancellationToken): void {
 export function normalizeNFC(items: string): string;
 export function normalizeNFC(items: string[]): string[];
 export function normalizeNFC(items: string | string[]): string | string[] {
-  if (process.platform !== "darwin") {
+  if (process.platform !== 'darwin') {
     return items;
   }
 
   if (Array.isArray(items)) {
-    return items.map(item => item.normalize("NFC"));
+    return items.map(item => item.normalize('NFC'));
   }
 
-  return items.normalize("NFC");
+  return items.normalize('NFC');
 }
 
 export function readdir(dir: string): Promise<string[]> {

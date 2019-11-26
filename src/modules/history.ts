@@ -1,18 +1,18 @@
-import { IGist, IHistory, IUser, HistoryStatus } from "./interfaces";
+import { IGist, IHistory, IUser, HistoryStatus } from './interfaces';
 
-import UserModule from "./user";
-import ChangeStatusModule from "./changeStatus";
+import UserModule from './user';
+import ChangeStatusModule from './changeStatus';
 
 export default class HistoryModule implements IHistory {
   user?: IUser;
-  version = "";
-  committedAt = "";
+  version = '';
+  committedAt = '';
   changeStatus = {
     total: 0,
     additions: 0,
     deletions: 0
   };
-  url = "";
+  url = '';
   status: HistoryStatus = HistoryStatus.Unknown;
   gist?: IGist;
 

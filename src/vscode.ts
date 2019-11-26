@@ -1,10 +1,10 @@
-import i18n from "./i18n";
+import i18n from './i18n';
 
-import { commands, window, workspace } from "vscode";
+import { commands, window, workspace } from 'vscode';
 
-import promisify from "./promisify";
+import promisify from './promisify';
 
-import * as constans from "./constans";
+import * as constans from './constans';
 
 export class MessageChain {
   private text: string;
@@ -13,19 +13,19 @@ export class MessageChain {
     this.text = i18n(key, ...args);
   }
 
-  showErrorMessage<T>(...argArray: any[]) {
+  error<T>(...argArray: any[]) {
     argArray.unshift(this.text);
-    return showErrorMessage(...argArray);
+    return error(...argArray);
   }
 
-  showWarningMessage<T>(...argArray: any[]) {
+  warn<T>(...argArray: any[]) {
     argArray.unshift(this.text);
-    return showWarningMessage(...argArray);
+    return warn(...argArray);
   }
 
-  showInformationMessage<T>(...argArray: any[]) {
+  info<T>(...argArray: any[]) {
     argArray.unshift(this.text);
-    return showInformationMessage(...argArray);
+    return info(...argArray);
   }
 }
 
@@ -33,11 +33,11 @@ export function message(key: string, ...args: any[]): MessageChain {
   return new MessageChain(key, ...args);
 }
 
-export function executeCommand<T>(...argArray: any[]) {
+export function execute<T>(...argArray: any[]) {
   return promisify<T>(commands.executeCommand, commands).apply(commands, argArray);
 }
 
-export function showErrorMessage<T>(...argArray: any[]) {
+export function error<T>(...argArray: any[]) {
   const modal = (argArray.length > 1) && (argArray[1] instanceof Object) && argArray[1].modal;
   if (!modal) {
     argArray[0] = `${constans.EXTENSION_NAME}: ${argArray[0]}`;
@@ -45,7 +45,7 @@ export function showErrorMessage<T>(...argArray: any[]) {
   return promisify<T>(window.showErrorMessage, window).apply(window, argArray);
 }
 
-export function showWarningMessage<T>(...argArray: any[]) {
+export function warn<T>(...argArray: any[]) {
   const modal = (argArray.length > 1) && (argArray[1] instanceof Object) && argArray[1].modal;
   if (!modal) {
     argArray[0] = `${constans.EXTENSION_NAME}: ${argArray[0]}`;
@@ -53,7 +53,7 @@ export function showWarningMessage<T>(...argArray: any[]) {
   return promisify<T>(window.showWarningMessage, window).apply(window, argArray);
 }
 
-export function showInformationMessage<T>(...argArray: any[]) {
+export function info<T>(...argArray: any[]) {
   const modal = (argArray.length > 1) && (argArray[1] instanceof Object) && argArray[1].modal;
   if (!modal) {
     argArray[0] = `${constans.EXTENSION_NAME}: ${argArray[0]}`;
