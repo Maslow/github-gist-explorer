@@ -89,10 +89,10 @@ export class GitHubGistExplorer extends Subscriber {
     if (commandId === 'GitHubGistExplorer.SubscriptionTree.refresh') {
       this.subscriptionTree.refresh();
     } else {
-      const home: string = GistFileSystemProvider.homeDirectory();
-      filesystem.rmrf(home).finally(() => {
+      // const home: string = GistFileSystemProvider.homeDirectory();
+      // filesystem.rmrf(home).finally(() => {
         this.gistTree.refresh();
-      });
+      // });
     }
   }
 
@@ -213,7 +213,7 @@ export class GitHubGistExplorer extends Subscriber {
   @Command('GitHubGistExplorer.shortcut.sync')
   sync(commandId: string, node: GistTreeItem | FileTreeItem | Uri | undefined) {
     const now = new Date().toLocaleString();
-
+    console.log({now})
     if (node === undefined) {
       const tasks = this.gistTree.items.map(v => this.syncGist(v));
       loading('explorer.synchronizing', () => Promise.all(tasks))
@@ -565,10 +565,10 @@ export class GitHubGistExplorer extends Subscriber {
       if (changes.includes('GithubGistExplorer.explorer.subscriptions')) {
         this.subscriptionTree.refresh();
       } else {
-        const home: string = GistFileSystemProvider.homeDirectory();
-        filesystem.rmrf(home).finally(() => {
+        // const home: string = GistFileSystemProvider.homeDirectory();
+        // filesystem.rmrf(home).finally(() => {
           this.gistTree.refresh();
-        });
+        // });
       }
     }
   }
